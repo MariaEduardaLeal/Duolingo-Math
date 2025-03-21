@@ -29,3 +29,8 @@ body {
 #error-message {
     margin-bottom: 1rem;
 }
+
+/* Mensagem de sucesso */
+#success-message {
+    margin-bottom: 1rem;
+}
