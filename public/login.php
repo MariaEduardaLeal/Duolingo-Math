@@ -36,15 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             position: absolute;
             width: 40px;
             opacity: 0.7;
+            z-index: 1; /* Estrelas ficam atrás do formulário */
         }
         .planet {
             position: absolute;
             width: 100px;
-            z-index: 5;
+            z-index: 5; /* Planeta fica atrás do formulário */
         }
         .form-container {
             position: relative;
-            z-index: 10;
+            z-index: 10; /* Formulário fica na frente */
         }
     </style>
 </head>
@@ -52,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Estrelas dinâmicas -->
     <div id="stars-container"></div>
 
-    <!-- Planeta orbitando -->
+    <!-- Planeta em posição aleatória -->
     <img src="assets/planet.png" class="planet" id="planet" alt="Planeta">
 
     <!-- Formulário de Login -->
@@ -74,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         // Gerar várias estrelas
         const starsContainer = document.getElementById("stars-container");
-        const numStars = 20; // Número de estrelas
+        const numStars = 20;
         for (let i = 0; i < numStars; i++) {
             const star = document.createElement("img");
             star.src = "assets/star_smile.png";
@@ -83,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             star.style.top = Math.random() * 100 + "vh";
             starsContainer.appendChild(star);
 
-            // Animação de piscar e mover
             gsap.to(star, {
                 opacity: Math.random() * 0.5 + 0.3,
                 duration: 1 + Math.random(),
@@ -101,42 +101,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         }
 
-        // Animação do planeta orbitando o formulário
+        // Posicionar o planeta aleatoriamente (mesma lógica das estrelas)
         const planet = document.getElementById("planet");
-        const form = document.querySelector(".form-container");
-        const formRect = form.getBoundingClientRect();
-        const centerX = formRect.left + formRect.width / 2;
-        const centerY = formRect.top + formRect.height / 2;
-        const radiusX = formRect.width / 2 + 150; // Raio da órbita (horizontal)
-        const radiusY = formRect.height / 2 + 100; // Raio da órbita (vertical)
 
-        // Órbita elíptica ao redor do formulário
-        gsap.to(planet, {
-            x: () => centerX + radiusX * Math.cos(gsap.getProperty(planet, "rotation")),
-            y: () => centerY + radiusY * Math.sin(gsap.getProperty(planet, "rotation")),
-            rotation: "+=360", // Rotação para a órbita
-            duration: 10,
-            repeat: -1,
-            ease: "none",
-            transformOrigin: "center center"
-        });
+        // Verificar se a imagem do planeta carregou
+        planet.onerror = () => {
+            console.error("Imagem do planeta não carregada. Verifique o caminho: assets/planet.png");
+        };
+        planet.onload = () => {
+            console.log("Imagem do planeta carregada com sucesso!");
+            // Posiciona o planeta aleatoriamente, como as estrelas
+            planet.style.left = Math.random() * 100 + "vw";
+            planet.style.top = Math.random() * 100 + "vh";
 
-        // Rotação do planeta sobre seu próprio eixo
-        gsap.to(planet, {
-            rotation: "+=360", // Gira 360 graus continuamente
-            duration: 3, // Duração da rotação (mais rápida que a órbita)
-            repeat: -1,
-            ease: "none",
-            transformOrigin: "center center"
-        });
+            // Animação de opacidade (igual às estrelas)
+            gsap.to(planet, {
+                opacity: Math.random() * 0.5 + 0.3,
+                duration: 1 + Math.random(),
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Movimento suave apenas no eixo X (esquerda e direita)
+            gsap.to(planet, {
+                x: (Math.random() - 0.5) * 100, // Movimento apenas no eixo X
+                duration: 5 + Math.random() * 5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Rotação do planeta sobre seu próprio eixo
+            gsap.to(planet, {
+                rotation: "+=360",
+                duration: 3,
+                repeat: -1,
+                ease: "none",
+                transformOrigin: "center center"
+            });
+        };
 
         // Efeito no botão "Decolar!"
         const decolar = document.getElementById("decolar");
         decolar.addEventListener("mouseenter", () => {
-            gsap.to(decolar, { scale: 1.1, duration: 0.3, ease: "elastic.out(1, 0.3)" });
+            gsap.to(decolar, {
+                scale: 1.1,
+                duration: 0.3,
+                ease: "elastic.out(1, 0.3)"
+            });
         });
         decolar.addEventListener("mouseleave", () => {
-            gsap.to(decolar, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.3)" });
+            gsap.to(decolar, {
+                scale: 1,
+                duration: 0.3,
+                ease: "elastic.out(1, 0.3)"
+            });
         });
     </script>
 </body>
