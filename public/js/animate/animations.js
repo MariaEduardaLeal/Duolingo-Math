@@ -68,18 +68,18 @@ function setupPlanet() {
     };
 }
 
-// Função para adicionar efeitos ao botão "Decolar!"
-function setupButtonEffects() {
-    const decolar = document.getElementById("decolar");
-    decolar.addEventListener("mouseenter", () => {
-        gsap.to(decolar, {
+// Função para adicionar efeitos ao botão
+function setupButtonEffects(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.addEventListener("mouseenter", () => {
+        gsap.to(button, {
             scale: 1.1,
             duration: 0.3,
             ease: "elastic.out(1, 0.3)"
         });
     });
-    decolar.addEventListener("mouseleave", () => {
-        gsap.to(decolar, {
+    button.addEventListener("mouseleave", () => {
+        gsap.to(button, {
             scale: 1,
             duration: 0.3,
             ease: "elastic.out(1, 0.3)"
