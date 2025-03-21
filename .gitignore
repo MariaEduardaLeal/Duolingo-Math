@@ -1,0 +1,16 @@
+# Arquivos de configuração sensíveis
+.env
+
+# Dependências do Composer (serão baixadas no servidor)
+vendor/
+
+# Arquivos temporários e logs
+*.log
+*.cache
+
+# Pastas do XAMPP (caso copie algo acidentalmente)
+htdocs/
+
+# Arquivos de build ou backups
+*.bak
+*.zip
