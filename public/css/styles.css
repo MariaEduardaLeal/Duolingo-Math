@@ -1,0 +1,31 @@
+/* Estilização geral do corpo da página */
+body {
+    background: radial-gradient(circle, #4b0082, #1e0033);
+    overflow: hidden;
+}
+
+/* Estrelas dinâmicas */
+.star {
+    position: absolute;
+    width: 40px;
+    opacity: 0.7;
+    z-index: 1; /* Estrelas ficam atrás do formulário */
+}
+
+/* Planeta em posição aleatória */
+.planet {
+    position: absolute;
+    width: 100px;
+    z-index: 5; /* Planeta fica atrás do formulário */
+}
+
+/* Contêiner do formulário */
+.form-container {
+    position: relative;
+    z-index: 10; /* Formulário fica na frente */
+}
+
+/* Mensagem de erro */
+#error-message {
+    margin-bottom: 1rem;
+}
