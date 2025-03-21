@@ -71,6 +71,10 @@ function setupPlanet() {
 // Função para adicionar efeitos ao botão
 function setupButtonEffects(buttonId) {
     const button = document.getElementById(buttonId);
+    if (!button) {
+        console.warn(`Botão com ID "${buttonId}" não encontrado.`);
+        return;
+    }
     button.addEventListener("mouseenter", () => {
         gsap.to(button, {
             scale: 1.1,

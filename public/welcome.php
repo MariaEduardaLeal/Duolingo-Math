@@ -1,0 +1,44 @@
+<?php
+require_once '../src/config.php';
+
+// Verifica se o usuário está logado
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à Nave!</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="flex items-center justify-center min-h-screen text-white">
+    <!-- Estrelas dinâmicas -->
+    <div id="stars-container"></div>
+
+    <!-- Planeta em posição aleatória -->
+    <img src="assets/planet.png" class="planet" id="planet" alt="Planeta">
+
+    <!-- Contêiner da introdução -->
+    <div class="form-container bg-blue-200 p-8 rounded-lg shadow-lg text-purple-900 w-full max-w-md text-center">
+        <img src="assets/laika_astronaut.png" id="laika" class="w-48 mx-auto mb-4" alt="Laika" onerror="console.error('Imagem da Laika não carregada. Verifique o caminho: assets/laika.png')">
+        <h2 class="text-3xl font-bold mb-4">Oi, eu sou a Laika!</h2>
+        <p id="intro-message" class="text-lg">
+            Fui enviada ao espaço pela URSS em 1957, e agora estou aqui para te ajudar com as lições de matemática! Vamos aprender juntos?
+        </p>
+        <button id="start-lessons" class="mt-6 bg-yellow-500 text-purple-900 p-3 rounded-full font-bold hover:bg-yellow-400 transition-all hidden">
+            Vamos para as lições!
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="js/animate/animations.js"></script>
+    <script src="js/welcome.js"></script>
+</body>
+</html>

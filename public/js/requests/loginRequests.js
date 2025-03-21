@@ -6,7 +6,7 @@ function login(email, password) {
     })
     .then(response => {
         if (response.data.success) {
-            window.location.href = "phases.php";
+            window.location.href = "welcome.php";
         } else {
             throw new Error(response.data.message || "Erro ao realizar login");
         }
