@@ -1,9 +1,10 @@
+console.log("Botão decolar encontrado:", document.getElementById("decolar"));
 // Função para inicializar a página
 function init() {
     // Inicializa as animações
     createStars();
     setupPlanet();
-    setupButtonEffects();
+    setupButtonEffects("decolar");
 
     // Configura o formulário de login
     const loginForm = document.getElementById("login-form");

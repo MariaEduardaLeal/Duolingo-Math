@@ -34,3 +34,9 @@ body {
 #success-message {
     margin-bottom: 1rem;
 }
+
+/* Imagem da Laika */
+#laika {
+    transition: transform 0.3s ease;
+    /* Removido o border-radius, já que a Laika com capacete não precisa */
+}
