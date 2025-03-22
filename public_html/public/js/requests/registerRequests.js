@@ -1,6 +1,7 @@
 // Função para realizar o cadastro via API
 function register(name, email, password) {
-    axios.post('/src/api/register.php', {
+    const url = `${window.location.origin}/src/api/register.php`;
+    axios.post(url, {
         name: name,
         email: email,
         password: password
