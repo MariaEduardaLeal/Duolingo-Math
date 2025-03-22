@@ -1,10 +1,13 @@
 <?php
 // Configura o cabeçalho para JSON
+
+use App\Controllers\AuthController;
+
 header('Content-Type: application/json');
 
 // Importa as dependências necessárias
 require_once '../config.php';
-use App\Controllers\AuthController;
+
 
 // Verifica se a requisição é POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

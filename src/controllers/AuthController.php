@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-require_once '../config.php';
+require_once __DIR__ . '/../config.php'; // Ajustado para caminho absoluto
 use App\Models\User;
 
 class AuthController
