@@ -1,0 +1,110 @@
+/* Estilo geral */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Fundo espacial */
+.space-background {
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #1a1a2e;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    color: white;
+    text-align: center;
+}
+
+/* Título */
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Contêiner das fases */
+.phases-container {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Altura ajustável para o contêiner */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilo de cada fase (corpo celeste) */
+.phase {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, scale 0.5s ease;
+    z-index: 2;
+    opacity: 0; /* Começa invisível */
+    transform: scale(0); /* Começa com escala 0 para um efeito de "pop-in" */
+}
+
+/* Animação de hover */
+.phase:hover:not(.locked) {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Tipos de corpos celestes */
+.planet {
+    background: radial-gradient(circle, #4a90e2, #1e3a8a);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+}
+
+.star {
+    background: radial-gradient(circle, #f7d025, #d4a017);
+    box-shadow: 0 0 15px rgba(247, 208, 37, 0.7);
+}
+
+.comet {
+    background: radial-gradient(circle, #ff6b6b, #b22222);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+}
+
+/* Status das fases */
+.completed {
+    border: 3px solid #00ff00;
+}
+
+.current {
+    border: 3px solid #ffd700;
+    animation: blink 1s infinite; /* Animação de piscar */
+}
+
+.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border: 3px solid #ff0000;
+}
+
+/* Animação de piscar para a fase atual */
+@keyframes blink {
+    0% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+}
+
+/* Número da fase */
+.phase-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
