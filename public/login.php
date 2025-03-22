@@ -28,7 +28,7 @@
             <button type="submit" id="decolar" class="w-full bg-yellow-500 text-purple-900 p-3 rounded-full font-bold hover:bg-yellow-400 transition-all">Decolar!</button>
         </form>
         <p class="text-center mt-4">
-            Não tem uma conta? <a href="register.php" class="text-purple-700 hover:underline">Cadastrar</a>
+            Não tem uma conta? <a href="/public/register.php" class="text-purple-700 hover:underline">Cadastrar</a>
         </p>
     </div>
 
