@@ -7,7 +7,7 @@ body {
 
 /* Fundo espacial com textura de estrelas */
 .space-background {
-    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat,radial-gradient(circle, #4b0082, #1e0033);
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, radial-gradient(circle, #4b0082, #1e0033);
     min-height: 100vh;
     padding: 20px;
     position: relative;
@@ -32,9 +32,11 @@ h1 {
     margin: 0 auto;
 }
 
-/* Estilo de cada fase (apenas a imagem) */
+/* Estilo de cada fase (contêiner para a imagem) */
 .phase {
     position: relative;
+    width: 120px; /* Dimensão fixa para alinhamento consistente */
+    height: 100%; /* Dimensão fixa para alinhamento consistente */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,14 +44,16 @@ h1 {
     background: none; /* Remove qualquer fundo */
     border: none; /* Remove qualquer borda */
     opacity: 0; /* Começa invisível para a animação de aparição */
+    animation: float 3s ease-in-out infinite; /* Adiciona animação de flutuação */
 }
 
 /* Imagem da fase */
 .phase-image {
     max-width: 190px; /* Limita a largura máxima */
-    width: auto; /* Mantém a proporção original */
-    height: auto; /* Mantém a proporção original */
+    max-height: 190px; /* Limita a altura máxima */
+    width: 100%; /* Preenche o contêiner */
     object-fit: contain; /* Garante que a imagem não seja distorcida */
+    padding: 10px;
 }
 
 /* Efeito de hover para fases acessíveis */
@@ -59,16 +63,16 @@ h1 {
 
 /* Estilos para os diferentes status das fases */
 .completed .phase-image {
-    filter: brightness(0.6); /* Escurece a imagem para parecer menos atraente */
+    filter: brightness(0.5) contrast(0.8); /* Escurece e reduz o contraste */
 }
 
 .current .phase-image {
-    filter: brightness(1.2); /* Torna a cor mais viva */
-    animation: pulse 1.5s infinite; /* Animação de pulsação (piscar e crescer) */
+    filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); /* Cor viva com brilho */
+    animation: pulse 1s infinite; /* Animação de pulsação mais rápida */
 }
 
 .locked .phase-image {
-    filter: grayscale(100%); /* Converte para tons de cinza */
+    filter: grayscale(100%) brightness(0.7); /* Tons de cinza com leve escurecimento */
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -78,23 +82,39 @@ h1 {
     0% {
         transform: scale(1);
         opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
     }
     50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        transform: scale(1.15);
+        opacity: 0.9;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
     100% {
         transform: scale(1);
         opacity: 1;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Animação de flutuação para todas as fases */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
     }
 }
 
 /* Número da fase (sobreposto à imagem) */
 .phase-number {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centraliza o número */
     font-size: 1.2em;
     font-weight: bold;
     color: white;
@@ -106,7 +126,6 @@ h1 {
 .phase {
     flex: 0 0 calc(20% - 20px); /* 20% da largura menos o gap */
     margin-bottom: 20px;
-    min-height: 80px; /* Garante espaço suficiente para a imagem e o número */
 }
 
 /* Forçar quebra de linha a cada 5 fases */
@@ -117,8 +136,9 @@ h1 {
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
     .phase {
-        flex: 0 0 calc(33.33% - 20px); /* 3 fases por linha em telas menores */
-        min-height: 60px;
+        flex: 0 0 calc(33.33% - 20px); /* 3 fases por linha */
+        width: 80px;
+        height: 80px;
     }
 
     .phase-image {
@@ -137,8 +157,9 @@ h1 {
 
 @media (max-width: 480px) {
     .phase {
-        flex: 0 0 calc(50% - 20px); /* 2 fases por linha em telas muito pequenas */
-        min-height: 50px;
+        flex: 0 0 calc(50% - 20px); /* 2 fases por linha */
+        width: 60px;
+        height: 60px;
     }
 
     .phase-image {
