@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Atraso para cada fase (0.8s por fase)
             setTimeout(() => {
                 phase.style.opacity = '1';
+                // Adiciona um atraso aleatório à animação de flutuação para um efeito mais natural
+                const floatDelay = Math.random() * 2; // Entre 0 e 2 segundos
+                phase.style.animationDelay = `${floatDelay}s`;
             }, index * 800);
         });
     };
