@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: radial-gradient(circle, #4b0082, #1e0033);
+            background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, radial-gradient(circle, #4b0082, #1e0033);
             overflow: hidden;
             display: flex;
             justify-content: center;
