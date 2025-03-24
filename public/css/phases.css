@@ -1,13 +1,13 @@
-/* Estilo geral */
+/* Estilo geral do corpo */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
 }
 
-/* Fundo espacial */
+/* Fundo espacial com textura de estrelas */
 .space-background {
-    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #1a1a2e;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat,radial-gradient(circle, #4b0082, #1e0033);
     min-height: 100vh;
     padding: 20px;
     position: relative;
@@ -15,7 +15,7 @@ body {
     text-align: center;
 }
 
-/* Título */
+/* Título do mapa de fases */
 h1 {
     font-size: 2.5em;
     margin-bottom: 40px;
@@ -24,87 +24,133 @@ h1 {
 
 /* Contêiner das fases */
 .phases-container {
-    position: relative;
-    width: 100%;
-    height: 80vh; /* Altura ajustável para o contêiner */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Estilo de cada fase (corpo celeste) */
+/* Estilo de cada fase (apenas a imagem) */
 .phase {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, scale 0.5s ease;
-    z-index: 2;
-    opacity: 0; /* Começa invisível */
-    transform: scale(0); /* Começa com escala 0 para um efeito de "pop-in" */
+    background: none; /* Remove qualquer fundo */
+    border: none; /* Remove qualquer borda */
+    opacity: 0; /* Começa invisível para a animação de aparição */
 }
 
-/* Animação de hover */
+/* Imagem da fase */
+.phase-image {
+    max-width: 190px; /* Limita a largura máxima */
+    width: auto; /* Mantém a proporção original */
+    height: auto; /* Mantém a proporção original */
+    object-fit: contain; /* Garante que a imagem não seja distorcida */
+}
+
+/* Efeito de hover para fases acessíveis */
 .phase:hover:not(.locked) {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-/* Tipos de corpos celestes */
-.planet {
-    background: radial-gradient(circle, #4a90e2, #1e3a8a);
-    box-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+/* Estilos para os diferentes status das fases */
+.completed .phase-image {
+    filter: brightness(0.6); /* Escurece a imagem para parecer menos atraente */
 }
 
-.star {
-    background: radial-gradient(circle, #f7d025, #d4a017);
-    box-shadow: 0 0 15px rgba(247, 208, 37, 0.7);
+.current .phase-image {
+    filter: brightness(1.2); /* Torna a cor mais viva */
+    animation: pulse 1.5s infinite; /* Animação de pulsação (piscar e crescer) */
 }
 
-.comet {
-    background: radial-gradient(circle, #ff6b6b, #b22222);
-    box-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
-}
-
-/* Status das fases */
-.completed {
-    border: 3px solid #00ff00;
-}
-
-.current {
-    border: 3px solid #ffd700;
-    animation: blink 1s infinite; /* Animação de piscar */
-}
-
-.locked {
+.locked .phase-image {
+    filter: grayscale(100%); /* Converte para tons de cinza */
     opacity: 0.5;
     cursor: not-allowed;
-    border: 3px solid #ff0000;
 }
 
-/* Animação de piscar para a fase atual */
-@keyframes blink {
+/* Animação de pulsação para a fase atual */
+@keyframes pulse {
     0% {
+        transform: scale(1);
         opacity: 1;
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
     }
     50% {
-        opacity: 0.5;
-        box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        transform: scale(1.2);
+        opacity: 0.8;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
     }
     100% {
+        transform: scale(1);
         opacity: 1;
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
     }
 }
 
-/* Número da fase */
+/* Número da fase (sobreposto à imagem) */
 .phase-number {
+    position: absolute;
     font-size: 1.2em;
     font-weight: bold;
     color: white;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+/* Layout: 5 fases por linha */
+.phase {
+    flex: 0 0 calc(20% - 20px); /* 20% da largura menos o gap */
+    margin-bottom: 20px;
+    min-height: 80px; /* Garante espaço suficiente para a imagem e o número */
+}
+
+/* Forçar quebra de linha a cada 5 fases */
+.phase:nth-child(5n+1) {
+    clear: left;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .phase {
+        flex: 0 0 calc(33.33% - 20px); /* 3 fases por linha em telas menores */
+        min-height: 60px;
+    }
+
+    .phase-image {
+        max-width: 60px;
+        max-height: 60px;
+    }
+
+    .phase-number {
+        font-size: 1em;
+    }
+
+    .phase:nth-child(3n+1) {
+        clear: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .phase {
+        flex: 0 0 calc(50% - 20px); /* 2 fases por linha em telas muito pequenas */
+        min-height: 50px;
+    }
+
+    .phase-image {
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    .phase-number {
+        font-size: 0.8em;
+    }
+
+    .phase:nth-child(2n+1) {
+        clear: left;
+    }
 }
