@@ -2,7 +2,7 @@
 .env
 .env.hostinger
 
-# Dependências do Composer (serão baixadas no servidor)
+# Dependências do javascript (serão baixadas no servidor)
 backend/node_modules
 
 # Arquivos temporários e logs
