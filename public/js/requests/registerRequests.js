@@ -1,36 +1,30 @@
-// Função para realizar o cadastro via API
-function register(name, email, password) {
-    const url = `${window.location.origin}/src/api/register.php`;
-    axios.post(url, {
-        name: name,
-        email: email,
-        password: password
-    })
-    .then(response => {
-        if (response.data.success) {
-            // Exibe mensagem de sucesso
-            const successMessage = document.getElementById("success-message");
-            successMessage.textContent = response.data.message;
-            successMessage.classList.remove("hidden");
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-            // Limpa o formulário
-            document.getElementById("register-form").reset();
+    const name = document.querySelector('input[name="name"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
 
-            // Opcional: redireciona para a tela de login após 2 segundos
-            setTimeout(() => {
-                window.location.href = "login.php";
-            }, 2000);
-        } else {
-            throw new Error(response.data.message || "Erro ao realizar cadastro");
-        }
-    })
-    .catch(error => {
-        const errorMessage = document.getElementById("error-message");
-        if (error.response && error.response.data && error.response.data.message) {
-            errorMessage.textContent = error.response.data.message;
-        } else {
-            errorMessage.textContent = error.message || "Erro ao realizar cadastro";
-        }
-        errorMessage.classList.remove("hidden");
-    });
-}
+    try {
+        const response = await axios.post('http://localhost:3000/api/register', {
+            name,
+            email,
+            password
+        });
+
+        errorMessage.classList.add('hidden');
+        successMessage.classList.remove('hidden');
+        successMessage.textContent = 'Cadastro realizado com sucesso! Redirecionando para o login...';
+
+        
+        setTimeout(() => {
+            window.location.href = '/login.html';
+        }, 2000);
+    } catch (error) {
+        successMessage.classList.add('hidden');
+        errorMessage.classList.remove('hidden');
+        errorMessage.textContent = error.response?.data?.error || 'Erro ao cadastrar';
+    }
+});
