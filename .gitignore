@@ -3,7 +3,7 @@
 .env.hostinger
 
 # Dependências do Composer (serão baixadas no servidor)
-vendor/
+backend/node_modules
 
 # Arquivos temporários e logs
 *.log

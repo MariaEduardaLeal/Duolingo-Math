@@ -77,4 +77,12 @@ function init() {
 }
 
 // Inicializa quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () =>{
+    init()
+    const startLessonsButton = document.getElementById('start-lessons');
+    startLessonsButton.classList.remove('hidden');
+
+    startLessonsButton.addEventListener('click', () => {
+        window.location.href = '/phases.html';
+    });
+});
