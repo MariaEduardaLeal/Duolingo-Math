@@ -74,3 +74,19 @@ mathlingo/
 │   └── phase.html                 # Página de uma fase individual
 └── README.md                      # Documentação do projeto
 ```
+
+## 🚀 Como Rodar o Projeto Localmente
+
+Siga os passos abaixo para rodar o MathLingo na sua máquina.
+
+### Pré-requisitos
+- Node.js (versão 16 ou superior) instalado. Baixe aqui.
+- MySQL instalado e rodando localmente. Baixe aqui.
+- Um cliente MySQL (como MySQL Workbench ou o terminal MySQL) para criar o banco de dados.
+  
+    ** Passo 1: Clonar o Repositório ** 
+    Clone o repositório para a sua máquina:
+    ```git
+    git clone https://github.com/MariaEduardaLeal/Duolingo-Math
+    cd mathlingo
+    ```
