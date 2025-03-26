@@ -23,6 +23,10 @@ const Phase = sequelize.define('Phase', {
   required_stars: {
     type: DataTypes.INTEGER,
     defaultValue: 3
+  },
+  explanation: {  // Novo campo adicionado
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   tableName: 'phases',

@@ -1,12 +1,16 @@
 const express = require('express');
+const { authenticateToken } = require('./authRoutes'); // Importar o middleware
 const router = express.Router();
 const UserProgress = require('../models/UserProgress');
 const Phase = require('../models/Phase');
 
-// Rota para obter o progresso do usuário
-router.get('/progress/:userId', async (req, res) => {
+// Rota para obter o progresso do usuário (protegida)
+router.get('/progress/:userId', authenticateToken, async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
+    if (userId !== req.user.id) { // Verifica se o usuário tem permissão
+      return res.status(403).json({ error: 'Acesso negado' });
+    }
     const progress = await UserProgress.findAll({
       where: { user_id: userId },
       include: [{ model: Phase, attributes: ['phase_number'] }],
@@ -29,10 +33,13 @@ router.get('/progress/:userId', async (req, res) => {
   }
 });
 
-// Rota para atualizar o progresso do usuário
-router.post('/progress', async (req, res) => {
+// Rota para atualizar o progresso do usuário (protegida)
+router.post('/progress', authenticateToken, async (req, res) => {
   try {
     const { userId, phaseId, starsEarned, completed } = req.body;
+    if (userId !== req.user.id) {
+      return res.status(403).json({ error: 'Acesso negado' });
+    }
     const [progress, created] = await UserProgress.findOrCreate({
       where: { user_id: userId, phase_id: phaseId },
       defaults: { user_id: userId, phase_id: phaseId, stars_earned: starsEarned, completed }

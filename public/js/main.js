@@ -1,4 +1,3 @@
-console.log("Botão decolar encontrado:", document.getElementById("decolar"));
 // Função para inicializar a página
 function init() {
     // Inicializa as animações
