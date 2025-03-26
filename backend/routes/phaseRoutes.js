@@ -49,4 +49,13 @@ router.post('/progress', async (req, res) => {
   }
 });
 
+router.get('/questions/:phaseId', async (req, res) => {
+  try {
+    const questions = await Question.findAll({ where: { phase_id: req.params.phaseId } });
+    res.json(questions);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar perguntas' });
+  }
+});
+
 module.exports = router;
