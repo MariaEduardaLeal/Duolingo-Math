@@ -1,0 +1,67 @@
+Acer (FC44-18E3)
+├── .gitignore
+├── arvore_filtrada.txt
+├── database.sql
+├── README.md
+├── backend/
+│   ├── .env
+│   ├── index.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── config/
+│   │   └── database.js
+│   ├── models/
+│   │   ├── Phase.js
+│   │   ├── Question.js
+│   │   ├── User.js
+│   │   └── UserProgress.js
+│   └── routes/
+│       ├── authRoutes.js
+│       └── phaseRoutes.js
+└── public/
+    ├── index.html
+    ├── login.html
+    ├── phase.html
+    ├── phases.html
+    ├── register.html
+    ├── welcome.html
+    ├── assets/
+    │   ├── gohan_brabo1.png
+    │   ├── gohan_brabo2.png
+    │   ├── gohan_brabo3.png
+    │   ├── laika_astronat3.png
+    │   ├── laika_astronaut.png
+    │   ├── laika_astronaut2.png
+    │   ├── laika_astronaut3.png
+    │   ├── laika_no_satelite.png
+    │   ├── laika_varios_angulos.jpeg
+    │   ├── planet.jpg
+    │   ├── planet.png
+    │   ├── planets_and_stars.png
+    │   ├── star.jpg
+    │   ├── star_smile.png
+    │   └── phases/
+    │       ├── phase_1.png
+    │       ├── phase_2.png
+    │       ├── phase_3.png
+    │       ├── ...
+    │       └── phase_20.png
+    ├── css/
+    │   ├── phases.css
+    │   └── styles.css
+    ├── js/
+    │   ├── main.js
+    │   ├── phase.js
+    │   ├── phases.js
+    │   ├── register.js
+    │   ├── welcome.js
+    │   ├── animate/
+    │   │   └── animations.js
+    │   └── requests/
+    │       ├── loginRequests.js
+    │       └── registerRequests.js
+    └── musics/
+        ├── correct_question.wav
+        ├── lose_phase.wav
+        ├── lose_question.wav
+        └── phase_win.wav
