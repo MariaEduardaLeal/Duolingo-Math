@@ -9,10 +9,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
 
-  // Inicializar animações de fundo
+  
   createStars();
   setupPlanet();
   setupButtonEffects('submit-answers');
+
+  
+  const loseQuestionSound = new Audio('/musics/lose_question.wav');
+  const losePhaseSound = new Audio('/musics/lose_phase.wav');
+  const correctQuestionSound = new Audio('/musics/correct_question.wav');
+  const phaseWinSound = new Audio('/musics/phase_win.wav');
 
   // Buscar questões da fase
   const fetchQuestions = async () => {
@@ -46,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const questions = await fetchQuestions();
   phaseTitle.textContent = await fetchPhaseTitle();
 
-  if (questions.length === 0) return;
+  if (questions.length == 0) return;
 
   let currentQuestion = 0;
   let errors = 0;
@@ -65,13 +71,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       progressBar.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       if (totalTime <= 0) {
           clearInterval(interval);
-          losePhase('Tempo esgotado!');
+          losePhase('Seu tempo acabou, criatura inferior!');
       }
   };
 
   const interval = setInterval(updateProgressBar, intervalTime * 1000);
 
-  // Mostrar ganho/perda de tempo
+  
   const showTimeChange = (change) => {
       timeChange.textContent = change > 0 ? `+${change}` : `${change}`;
       timeChange.className = 'time-change ' + (change > 0 ? 'time-gain' : 'time-loss');
@@ -81,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       );
   };
 
-  // Exibir questão atual
+  
   const carregarPergunta = () => {
       if (currentQuestion >= questions.length) {
           completePhase();
@@ -113,32 +119,34 @@ document.addEventListener('DOMContentLoaded', async () => {
       submitButton.classList.remove('hidden');
   };
 
-  // Verificar resposta
+  
   const verificarResposta = () => {
       const question = questions[currentQuestion];
       const options = questionsContainer.querySelectorAll('.option');
 
       options.forEach(option => {
-          if (option.dataset.option === question.correct_option) {
+          if (option.dataset.option == question.correct_option) {
               option.classList.add('correct');
-          } else if (option.dataset.option === selectedOption) {
+          } else if (option.dataset.option == selectedOption) {
               option.classList.add('incorrect');
           }
           option.style.pointerEvents = 'none';
       });
 
-      if (selectedOption === question.correct_option) {
+      if (selectedOption == question.correct_option) {
           totalTime += 3; // Ganha 3 segundos
           showTimeChange(3);
+          correctQuestionSound.play(); // Toca som de acerto da questão
           currentQuestion++;
           setTimeout(carregarPergunta, 1000);
       } else {
-          totalTime -= 5; // Perde 5 segundo
+          totalTime -= 5; // Perde 5 segundos
           showTimeChange(-5);
+          loseQuestionSound.play(); // Toca som de erro da questão
           errors++;
           if (errors > maxErrors) {
               clearInterval(interval);
-              losePhase('Você errou demais!');
+              losePhase('Você é um fracasso total, criatura inferior!');
           } else {
               currentQuestion++;
               setTimeout(carregarPergunta, 1000);
@@ -147,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       selectedOption = null;
   };
 
-
+  
   const completePhase = () => {
       clearInterval(interval);
       const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
@@ -165,28 +173,36 @@ document.addEventListener('DOMContentLoaded', async () => {
           })
       })
       .then(() => {
-          questionsContainer.innerHTML = `<p class="text-green-600 text-center">Fase concluída com ${starsEarned} estrela(s)! Voltando ao mapa...</p>`;
-          setTimeout(() => window.location.href = '/phases.html', 2000);
+          questionsContainer.innerHTML = `
+              <div class="text-center">
+                  <img src="/assets/laika_astronaut.png" class="w-48 mx-auto mb-4" alt="Laika">
+                  <p class="text-lg">Oi, eu sou a Laika! Parabéns, você terminou a fase com ${starsEarned} estrela(s)! Vamos continuar aprendendo juntos?</p>
+              </div>
+          `;
+          phaseWinSound.play(); // Toca som de vitória da fase
+          setTimeout(() => window.location.href = '/phases.html', 7000);
       })
       .catch(err => console.error('Erro ao salvar progresso:', err));
   };
 
+  // Perder a fase (com Gohan_brabo)
   const losePhase = (reason) => {
       questionsContainer.innerHTML = `
           <div class="text-center">
-              <img src="/assets/laika_astronaut.png" class="w-48 mx-auto mb-4" alt="Laika">
-              <p class="text-lg">Oi, eu sou a Laika! ${reason} Você perdeu essa fase, mas não desista! Tente novamente!</p>
+              <img src="/assets/gohan_brabo2.png" class="w-48 mx-auto mb-4" alt="Gohan Brabo">
+              <p class="text-lg">Eu sou o Gohan, o melhor de todos! ${reason} Volte quando parar de ser uma vergonha pros meus olhos!</p>
           </div>
       `;
       submitButton.classList.add('hidden');
-      setTimeout(() => window.location.href = '/phases.html', 3000);
+      losePhaseSound.play(); // Toca som de derrota da fase
+      setTimeout(() => window.location.href = '/phases.html', 7000);
   };
-
 
   submitButton.addEventListener('click', () => {
       if (selectedOption) verificarResposta();
       else alert('Selecione uma opção antes de enviar!');
   });
 
+  // Iniciar
   carregarPergunta();
 });
