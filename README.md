@@ -1,92 +1,193 @@
-# MathLingo 🚀
+# MathLingo 🚀🧮
 
-MathLingo é uma plataforma divertida e interativa para aprender matemática, inspirada no estilo do Duolingo. Com um tema espacial, o projeto guia os usuários por uma jornada de aprendizado com a ajuda da mascote Laika, uma astronauta canina que foi ao espaço em 1957. O objetivo é tornar o aprendizado de matemática envolvente, com desafios diários, recompensas, e um mapa de fases que desbloqueia conforme o progresso do usuário.
+## Bem-vindo ao MathLingo!
 
-Este projeto foi desenvolvido como uma aplicação web com um backend em Node.js (Express e Sequelize) e um frontend estático (HTML, CSS, JavaScript). Ele inclui autenticação de usuários, um mapa de fases dinâmico, e está pronto para ser expandido com desafios de matemática interativos.
+MathLingo é uma plataforma divertida e interativa para aprender matemática, inspirada no estilo do Duolingo. Pratique conceitos matemáticos de forma gamificada com desafios cronometrados, recompensas e mascotes carismáticos que guiam sua jornada de aprendizado.
 
-## 📋 Funcionalidades
-- **Autenticação de Usuários**: Cadastro e login com email e senha, usando bcrypt para hashear senhas.
-- **Mapa de Fases**: Um mapa com 20 fases organizadas em 4 linhas, que desbloqueiam conforme o progresso do usuário.
-- **Progresso do Usuário**: O progresso é salvo no banco de dados e exibido dinamicamente no mapa de fases.
-- **Tema Espacial**: Design com estrelas dinâmicas, planetas, e a mascote Laika, usando Tailwind CSS e animações com GSAP.
-- **API REST**: Backend com rotas para autenticação (/api/register, /api/login) e progresso (/api/progress/:userId).
+## Visão Geral
 
-## 🛠️ Tecnologias Utilizadas
-- **Backend:**
-    - Node.js
-    - Express
-    - Sequelize (ORM para MySQL)
-    - MySQL (banco de dados)
-    - Bcrypt (para hashear senhas)
-  
-- **Frontend:**
-    - HTML, CSS, JavaScript
-    - Tailwind CSS (framework de estilização)
-    - GSAP (animações)
-    - Axios (requisições HTTP)
-- **Ferramentas de Desenvolvimento:**
-    - Nodemon (para reiniciar o servidor automaticamente durante o desenvolvimento)
+MathLingo é um projeto full-stack desenvolvido com:
+- Backend: Node.js
+- Frontend: HTML/CSS/JavaScript
+- Banco de Dados: MySQL
 
-## 📂 Estrutura do Projeto
-```text
-mathlingo/
+## Funcionalidades
+
+### Autenticação
+- Registro e login de usuários
+- Criptografia de senhas com bcrypt
+
+### Mapa de Fases
+- Mapa visual com 20 fases
+- Status das fases: concluído, atual, bloqueado
+
+### Desafios de Matemática
+- Questões por fase
+- Temporizador de 90 segundos
+  - +3 segundos ao acertar
+  - -5 segundos ao errar
+- Limite de 3 erros por fase
+- Sistema de estrelas baseado em erros
+
+### Mascotes
+1. **Laika**: Cadela astronauta alegre
+   - Celebra vitórias com mensagens motivadoras
+2. **Gohan_brabo**: Gato mal-humorado
+   - Zomba em caso de derrota
+
+### Efeitos Sonoros
+- `correct_question.wav`: Acerto de questão
+- `lose_question.wav`: Erro de questão
+- `phase_win.wav`: Completar fase
+- `lose_phase.wav`: Perder fase
+
+### Animações
+- Estrelas e planetas animados com GSAP
+- Barra de progresso com indicadores de tempo
+
+## Estrutura do Projeto
+
+```
+MathLingo/
+├── .gitignore
+├── arvore_filtrada.txt
+├── database.sql
+├── README.md
 ├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── database.js        # Configuração do Sequelize (MySQL)
-│   │   ├── models/
-│   │   │   ├── User.js            # Modelo de usuário
-│   │   │   ├── Phase.js           # Modelo de fases
-│   │   │   └── UserProgress.js    # Modelo de progresso do usuário
-│   │   ├── routes/
-│   │   │   ├── authRoutes.js      # Rotas de autenticação (login, register)
-│   │   │   └── phaseRoutes.js     # Rotas para progresso do usuário
-│   │   └── index.js               # Arquivo principal do backend
-│   ├── node_modules/
+│   ├── .env
+│   ├── index.js
+│   ├── package-lock.json
 │   ├── package.json
-│   └── package-lock.json
-├── public/
-│   ├── assets/
-│   │   ├── phases/
-│   │   │   ├── phase_1.png
-│   │   │   ├── phase_2.png
-│   │   │   └── ...                # Imagens das fases (até phase_20.png)
-│   │   ├── laika_astronaut.png    # Imagem da mascote Laika
-│   │   └── planet.png             # Imagem de planeta
-│   ├── css/
-│   │   ├── phases.css             # Estilos do mapa de fases
-│   │   └── styles.css             # Estilos gerais
-│   ├── js/
-│   │   ├── animate/
-│   │   │   └── animations.js      # Animações com GSAP
-│   │   ├── requests/
-│   │   │   ├── loginRequests.js   # Requisições de login
-│   │   │   └── registerRequests.js # Requisições de cadastro
-│   │   ├── main.js                # Scripts gerais
-│   │   ├── phases.js              # Lógica do mapa de fases
-│   │   ├── register.js            # Lógica da página de cadastro
-│   │   └── welcome.js             # Lógica da página de boas-vindas
-│   ├── index.html                 # Página inicial
-│   ├── login.html                 # Página de login
-│   ├── welcome.html               # Página de boas-vindas
-│   ├── register.html              # Página de cadastro
-│   ├── phases.html                # Mapa de fases
-│   └── phase.html                 # Página de uma fase individual
-└── README.md                      # Documentação do projeto
+│   ├── config/
+│   │   └── database.js
+│   ├── models/
+│   │   ├── Phase.js
+│   │   ├── Question.js
+│   │   ├── User.js
+│   │   └── UserProgress.js
+│   └── routes/
+│       ├── authRoutes.js
+│       └── phaseRoutes.js
+└── public/
+    ├── index.html
+    ├── login.html
+    ├── phase.html
+    ├── phases.html
+    ├── register.html
+    ├── welcome.html
+    ├── assets/
+    │   ├── gohan_brabo1.png
+    │   ├── gohan_brabo2.png
+    │   ├── gohan_brabo3.png
+    │   ├── laika_astronat3.png
+    │   ├── laika_astronaut.png
+    │   ├── laika_astronaut2.png
+    │   ├── laika_astronaut3.png
+    │   ├── laika_no_satelite.png
+    │   ├── laika_varios_angulos.jpeg
+    │   ├── planet.jpg
+    │   ├── planet.png
+    │   ├── planets_and_stars.png
+    │   ├── star.jpg
+    │   ├── star_smile.png
+    │   └── phases/
+    │       ├── phase_1.png
+    │       ├── phase_2.png
+    │       ├── phase_3.png
+    │       ├── ...
+    │       └── phase_20.png
+    ├── css/
+    │   ├── phases.css
+    │   └── styles.css
+    ├── js/
+    │   ├── main.js
+    │   ├── phase.js
+    │   ├── phases.js
+    │   ├── register.js
+    │   ├── welcome.js
+    │   ├── animate/
+    │   │   └── animations.js
+    │   └── requests/
+    │       ├── loginRequests.js
+    │       └── registerRequests.js
+    └── musics/
+        ├── correct_question.wav
+        ├── lose_phase.wav
+        ├── lose_question.wav
+        └── phase_win.wav
 ```
 
-## 🚀 Como Rodar o Projeto Localmente
+## Tecnologias Utilizadas
 
-Siga os passos abaixo para rodar o MathLingo na sua máquina.
+### Backend
+- Node.js
+- Express
+- Sequelize
+- MySQL
+- bcrypt
+- JWT
 
-### Pré-requisitos
-- Node.js (versão 16 ou superior) instalado. Baixe aqui.
-- MySQL instalado e rodando localmente. Baixe aqui.
-- Um cliente MySQL (como MySQL Workbench ou o terminal MySQL) para criar o banco de dados.
-  
-    ** Passo 1: Clonar o Repositório ** 
-    Clone o repositório para a sua máquina:
-    ```git
-    git clone https://github.com/MariaEduardaLeal/Duolingo-Math
-    cd mathlingo
-    ```
+### Frontend
+- HTML
+- CSS (Tailwind CSS)
+- JavaScript
+- GSAP
+- Axios
+
+## Pré-requisitos
+
+- Node.js
+- MySQL
+
+## Instalação
+
+1. Clone o repositório
+```bash
+git clone https://github.com/seu-usuario/MathLingo.git
+cd MathLingo
+```
+
+2. Instale as dependências do backend
+```bash
+cd backend
+npm install
+```
+
+3. Configure o arquivo `.env`
+```
+DB_HOST=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+JWT_SECRET=
+```
+
+4. Banco de Dados
+- Crie o banco de dados `math_duolingo` no MySQL
+- Sequelize sincronizará as tabelas automaticamente
+
+## Como Jogar
+
+1. Faça login ou registre-se
+2. Acesse o mapa de fases
+3. Escolha uma fase desbloqueada
+4. Responda às questões matemáticas
+   - Acerte para ganhar 3 segundos
+   - Erre e perca 5 segundos
+5. Complete todas as questões ou perca após 3 erros/tempo esgotado
+
+## Próximos Passos
+
+- [ ] Adicionar mais questões matemáticas
+- [ ] Implementar níveis de dificuldade
+- [ ] Criar tela de perfil com estatísticas
+- [ ] Adicionar animações para mascotes
+- [ ] Integrar sistema de conquistas/recompensas
+
+## Contribuições
+
+Contribuições são bem-vindas! Abra issues ou envie pull requests com melhorias ou correções.
+
+## Licença
+
+[Adicione informações de licença aqui]
