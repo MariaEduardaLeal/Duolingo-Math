@@ -1,119 +1,192 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const questionsContainer = document.getElementById('questions-container');
-    const phaseTitle = document.getElementById('phase-title');
-    const submitButton = document.getElementById('submit-answers');
-    const urlParams = new URLSearchParams(window.location.search);
-    const phaseId = urlParams.get('phase_id');
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-  
-    // Inicializar animações de fundo
-    createStars();
-    setupPlanet();
-  
-    // Buscar questões da fase
-    const fetchQuestions = async () => {
+  const questionsContainer = document.getElementById('questions-container');
+  const phaseTitle = document.getElementById('phase-title');
+  const submitButton = document.getElementById('submit-answers');
+  const progressBar = document.getElementById('progressBar');
+  const timeChange = document.getElementById('timeChange');
+  const urlParams = new URLSearchParams(window.location.search);
+  const phaseId = urlParams.get('phase_id');
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+
+  // Inicializar animações de fundo
+  createStars();
+  setupPlanet();
+  setupButtonEffects('submit-answers');
+
+  // Buscar questões da fase
+  const fetchQuestions = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!response.ok) throw new Error('Erro ao buscar questões');
-        const questions = await response.json();
-        return questions;
+          const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!response.ok) throw new Error('Erro ao buscar questões');
+          const questions = await response.json();
+          return questions;
       } catch (error) {
-        console.error('Erro:', error);
-        questionsContainer.innerHTML = '<p class="text-red-600">Erro ao carregar questões.</p>';
-        return [];
+          console.error('Erro:', error);
+          questionsContainer.innerHTML = '<p class="text-red-600">Erro ao carregar questões.</p>';
+          return [];
       }
-    };
-  
-    // Buscar título da fase
-    const fetchPhaseTitle = async () => {
+  };
+
+  // Buscar título da fase
+  const fetchPhaseTitle = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const phase = await response.json();
-        return phase.title;
+          const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const phase = await response.json();
+          return phase.title;
       } catch (error) {
-        return `Fase ${phaseId}`;
+          return `Fase ${phaseId}`;
       }
-    };
-  
-    const questions = await fetchQuestions();
-    phaseTitle.textContent = await fetchPhaseTitle();
-  
-    if (questions.length === 0) return;
-  
-    let answers = {};
-  
-    // Exibir questões
-    questions.forEach((question, index) => {
-      const questionDiv = document.createElement('div');
-      questionDiv.classList.add('question-container');
-      questionDiv.innerHTML = `
-        <p class="text-lg font-semibold mb-2">Questão ${question.question_number}: ${question.question_text}</p>
-        <div class="options">
-          <div class="option" data-option="a">${question.option_a}</div>
-          <div class="option" data-option="b">${question.option_b}</div>
-          <div class="option" data-option="c">${question.option_c}</div>
-          <div class="option" data-option="d">${question.option_d}</div>
-        </div>
+  };
+
+  const questions = await fetchQuestions();
+  phaseTitle.textContent = await fetchPhaseTitle();
+
+  if (questions.length === 0) return;
+
+  let currentQuestion = 0;
+  let errors = 0;
+  const maxErrors = 3;
+  let totalTime = 90; // Tempo total em segundos
+  let intervalTime = 0.1; // Intervalo base em segundos
+  let selectedOption = null;
+
+  // Atualizar barra de progresso
+  const updateProgressBar = () => {
+      totalTime -= intervalTime;
+      const width = (totalTime / 90) * 100;
+      progressBar.style.width = `${width}%`;
+      let minutes = Math.floor(totalTime / 60);
+      let seconds = Math.floor(totalTime % 60);
+      progressBar.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      if (totalTime <= 0) {
+          clearInterval(interval);
+          losePhase('Tempo esgotado!');
+      }
+  };
+
+  const interval = setInterval(updateProgressBar, intervalTime * 1000);
+
+  // Mostrar ganho/perda de tempo
+  const showTimeChange = (change) => {
+      timeChange.textContent = change > 0 ? `+${change}` : `${change}`;
+      timeChange.className = 'time-change ' + (change > 0 ? 'time-gain' : 'time-loss');
+      gsap.fromTo(timeChange, 
+          { opacity: 1, y: 0 }, 
+          { opacity: 0, y: -20, duration: 1, ease: 'power2.out' }
+      );
+  };
+
+  // Exibir questão atual
+  const carregarPergunta = () => {
+      if (currentQuestion >= questions.length) {
+          completePhase();
+          return;
+      }
+
+      const question = questions[currentQuestion];
+      questionsContainer.innerHTML = `
+          <div class="question-container">
+              <p class="text-lg font-semibold mb-2">Questão ${question.question_number}: ${question.question_text}</p>
+              <div class="options">
+                  <div class="option" data-option="a">${question.option_a}</div>
+                  <div class="option" data-option="b">${question.option_b}</div>
+                  <div class="option" data-option="c">${question.option_c}</div>
+                  <div class="option" data-option="d">${question.option_d}</div>
+              </div>
+          </div>
       `;
-  
-      const options = questionDiv.querySelectorAll('.option');
+
+      const options = questionsContainer.querySelectorAll('.option');
       options.forEach(option => {
-        option.addEventListener('click', () => {
-          options.forEach(opt => opt.classList.remove('bg-gray-300')); // Remove seleção anterior
-          option.classList.add('bg-gray-300');
-          answers[question.id] = option.dataset.option;
-          if (Object.keys(answers).length === questions.length) {
-            submitButton.classList.remove('hidden');
+          option.addEventListener('click', () => {
+              options.forEach(opt => opt.classList.remove('bg-gray-300'));
+              option.classList.add('bg-gray-300');
+              selectedOption = option.dataset.option;
+          });
+      });
+
+      submitButton.classList.remove('hidden');
+  };
+
+  // Verificar resposta
+  const verificarResposta = () => {
+      const question = questions[currentQuestion];
+      const options = questionsContainer.querySelectorAll('.option');
+
+      options.forEach(option => {
+          if (option.dataset.option === question.correct_option) {
+              option.classList.add('correct');
+          } else if (option.dataset.option === selectedOption) {
+              option.classList.add('incorrect');
           }
-        });
+          option.style.pointerEvents = 'none';
       });
-  
-      questionsContainer.appendChild(questionDiv);
-    });
-  
-    // Enviar respostas
-    submitButton.addEventListener('click', async () => {
-      let starsEarned = 0;
-      questions.forEach(question => {
-        const userAnswer = answers[question.id];
-        const optionDiv = questionsContainer.querySelector(`[data-option="${userAnswer}"]`);
-        if (userAnswer === question.correct_option) {
-          starsEarned++;
-          optionDiv.classList.add('correct');
-        } else {
-          optionDiv.classList.add('incorrect');
-          questionsContainer.querySelector(`[data-option="${question.correct_option}"]`).classList.add('correct');
-        }
-      });
-  
-      // Desabilitar cliques após envio
-      document.querySelectorAll('.option').forEach(option => option.style.pointerEvents = 'none');
-      submitButton.disabled = true;
-  
-      // Atualizar progresso
-      try {
-        await fetch('http://localhost:3000/api/progress', {
+
+      if (selectedOption === question.correct_option) {
+          totalTime += 3; // Ganha 3 segundos
+          showTimeChange(3);
+          currentQuestion++;
+          setTimeout(carregarPergunta, 1000);
+      } else {
+          totalTime -= 5; // Perde 5 segundo
+          showTimeChange(-5);
+          errors++;
+          if (errors > maxErrors) {
+              clearInterval(interval);
+              losePhase('Você errou demais!');
+          } else {
+              currentQuestion++;
+              setTimeout(carregarPergunta, 1000);
+          }
+      }
+      selectedOption = null;
+  };
+
+
+  const completePhase = () => {
+      clearInterval(interval);
+      const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
+      fetch('http://localhost:3000/api/progress', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            userId: parseInt(userId),
-            phaseId: parseInt(phaseId),
-            starsEarned,
-            completed: starsEarned >= 3 // Completa se ganhar 3+ estrelas
+              userId: parseInt(userId),
+              phaseId: parseInt(phaseId),
+              starsEarned,
+              completed: true
           })
-        });
-        alert(`Você ganhou ${starsEarned} estrela(s)! ${starsEarned >= 3 ? 'Fase concluída!' : 'Tente novamente para mais estrelas.'}`);
-        setTimeout(() => window.location.href = '/phases.html', 2000);
-      } catch (error) {
-        console.error('Erro ao atualizar progresso:', error);
-      }
-    });
+      })
+      .then(() => {
+          questionsContainer.innerHTML = `<p class="text-green-600 text-center">Fase concluída com ${starsEarned} estrela(s)! Voltando ao mapa...</p>`;
+          setTimeout(() => window.location.href = '/phases.html', 2000);
+      })
+      .catch(err => console.error('Erro ao salvar progresso:', err));
+  };
+
+  const losePhase = (reason) => {
+      questionsContainer.innerHTML = `
+          <div class="text-center">
+              <img src="/assets/laika_astronaut.png" class="w-48 mx-auto mb-4" alt="Laika">
+              <p class="text-lg">Oi, eu sou a Laika! ${reason} Você perdeu essa fase, mas não desista! Tente novamente!</p>
+          </div>
+      `;
+      submitButton.classList.add('hidden');
+      setTimeout(() => window.location.href = '/phases.html', 3000);
+  };
+
+
+  submitButton.addEventListener('click', () => {
+      if (selectedOption) verificarResposta();
+      else alert('Selecione uma opção antes de enviar!');
   });
+
+  carregarPergunta();
+});
