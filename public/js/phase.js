@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
           `;
           phaseWinSound.play(); // Toca som de vitória da fase
-          setTimeout(() => window.location.href = '/phases.html', 3000);
+          setTimeout(() => window.location.href = '/phases.html', 7000);
       })
       .catch(err => console.error('Erro ao salvar progresso:', err));
   };
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
       submitButton.classList.add('hidden');
       losePhaseSound.play(); // Toca som de derrota da fase
-      setTimeout(() => window.location.href = '/phases.html', 6000);
+      setTimeout(() => window.location.href = '/phases.html', 7000);
   };
 
   submitButton.addEventListener('click', () => {
