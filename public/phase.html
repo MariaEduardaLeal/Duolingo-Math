@@ -12,15 +12,52 @@
         .option:hover { background-color: #e5e7eb; }
         .correct { background-color: #d1fae5; border-color: #10b981; }
         .incorrect { background-color: #fee2e2; border-color: #ef4444; }
+        .progress-bar-container {
+            background-color: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            height: 20px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4b0082;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        .time-change {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+        }
+        .time-gain { color: #10b981; }
+        .time-loss { color: #ef4444; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen text-white">
+<body class="flex items-center justify-center min-h-screen text-white bg-gray-800">
     <div id="stars-container"></div>
     <img src="/assets/planet.png" class="planet" id="planet" alt="Planeta">
 
     <div class="form-container bg-blue-200 p-8 rounded-lg shadow-lg text-purple-900 w-full max-w-2xl">
         <h2 class="text-3xl font-bold mb-6 text-center" id="phase-title">Fase X</h2>
+        
+        <!-- Barra de progresso -->
+        <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar">01:30</div>
+            <span id="timeChange" class="time-change"></span>
+        </div>
+
+        <!-- Questões -->
         <div id="questions-container"></div>
+        
+        <!-- Botão para enviar respostas -->
         <button id="submit-answers" class="w-full bg-yellow-500 text-purple-900 p-3 rounded-full font-bold hover:bg-yellow-400 transition-all mt-6 hidden">Enviar Respostas</button>
     </div>
 
