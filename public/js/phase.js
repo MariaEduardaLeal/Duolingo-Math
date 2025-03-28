@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Buscar questões da fase
   const fetchQuestions = async () => {
       try {
-          const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
+          const response = await fetch(`https://mathlingo.onrender.com/api/questions/${phaseId}`, {
               headers: { 'Authorization': `Bearer ${token}` }
           });
           if (!response.ok) throw new Error('Erro ao buscar questões');
