@@ -188,6 +188,3 @@ JWT_SECRET=
 
 Contribuições são bem-vindas! Abra issues ou envie pull requests com melhorias ou correções.
 
-## Licença
-
-[Adicione informações de licença aqui]
