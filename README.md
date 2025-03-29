@@ -32,7 +32,7 @@ MathLingo é um projeto full-stack desenvolvido com:
 ### Mascotes
 1. **Laika**: Cadela astronauta alegre
    - Celebra vitórias com mensagens motivadoras
-2. **Gohan_brabo**: Gato mal-humorado
+2. **Gohan**: Gato mal-humorado
    - Zomba em caso de derrota
 
 ### Efeitos Sonoros
@@ -188,6 +188,3 @@ JWT_SECRET=
 
 Contribuições são bem-vindas! Abra issues ou envie pull requests com melhorias ou correções.
 
-## Licença
-
-[Adicione informações de licença aqui]
