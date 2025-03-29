@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Buscar título da fase
   const fetchPhaseTitle = async () => {
       try {
-          const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
+          const response = await fetch(`https://mathlingo.onrender.com/api/phases/${phaseId}`, {
               headers: { 'Authorization': `Bearer ${token}` }
 
           });
