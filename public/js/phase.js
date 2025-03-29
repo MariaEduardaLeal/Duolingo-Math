@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const completePhase = () => {
       clearInterval(interval);
       const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
-      fetch('http://localhost:3000/api/progress', {
+      fetch('https://mathlingo.onrender.com/api/progress', {
     
           method: 'POST',
 
