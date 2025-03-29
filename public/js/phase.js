@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
           const response = await fetch(`https://mathlingo.onrender.com/api/questions/${phaseId}`, {
               headers: { 'Authorization': `Bearer ${token}` }
+
           });
           if (!response.ok) throw new Error('Erro ao buscar questões');
           const questions = await response.json();
@@ -40,7 +41,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const fetchPhaseTitle = async () => {
       try {
           const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
+
               headers: { 'Authorization': `Bearer ${token}` }
+              
           });
           const phase = await response.json();
           return phase.title;
@@ -160,7 +163,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       clearInterval(interval);
       const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
       fetch('http://localhost:3000/api/progress', {
+    
           method: 'POST',
+
           headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
