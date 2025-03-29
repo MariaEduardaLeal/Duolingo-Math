@@ -9,6 +9,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
     try {
         const response = await axios.post('http://localhost:3000/api/register', {
+            
             name,
             email,
             password

@@ -7,6 +7,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   
     try {
       const response = await axios.post('http://localhost:3000/api/login', {
+        
         email,
         password
       });

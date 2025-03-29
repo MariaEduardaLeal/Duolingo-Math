@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = localStorage.getItem('userId') || 1;
         const token = localStorage.getItem('token');
         const response = await fetch(`http://localhost:3000/api/progress/${userId}`, {
+          
           headers: {
             'Authorization': `Bearer ${token}`
           }
