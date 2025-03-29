@@ -1,60 +1,19 @@
 name: Replace Localhost URLs
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+on: pull_request
 
 jobs:
   replace-urls:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        ref: ${{ github.head_ref }}  # Important for PRs
-        
+    - uses: actions/checkout@v4
     - name: Replace URLs
       run: |
-        echo "##[group]Files modified:"
-        find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.env*" \) \
-          -exec grep -l "localhost:3000" {} \; || echo "No files with localhost found"
-        echo "##[endgroup]"
-        
-        find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.env*" \) \
+        find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" \) \
           -exec sed -i 's|http://localhost:3000|https://mathlingo.onrender.com|g' {} +
-        find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.env*" \) \
+        find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" \) \
           -exec sed -i 's|localhost:3000|https://mathlingo.onrender.com|g' {} +
-        
-    - name: Create Artifact with changes
-      if: always()
+    - name: Create Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: url-replacements-${{ github.run_number }}
+        name: url-replacements
         path: .
-        
-    - name: Show Diff
-      run: |
-        git diff || echo "No changes detected"
-        
-    - name: Create Review Comment
-      if: failure()
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const { data: diff } = await github.rest.repos.compareCommits({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            base: context.payload.pull_request.base.sha,
-            head: context.payload.pull_request.head.sha
-          });
-          
-          if (diff.files.some(file => file.filename.endsWith('.js') || file.filename.endsWith('.ts'))) {
-            github.rest.pulls.createReviewComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              body: "⚠️ URLs do localhost foram substituídas automaticamente. Baixe o artefato 'url-replacements' para ver as alterações.",
-              commit_id: context.payload.pull_request.head.sha,
-              path: diff.files[0].filename,
-              line: 1
-            });
-          }
