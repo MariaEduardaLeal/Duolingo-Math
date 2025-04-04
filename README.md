@@ -1,12 +1,12 @@
-# MathLingo 🚀🧮
+# ApoloPi 🚀🧮
 
-## Bem-vindo ao MathLingo!
+## Bem-vindo ao ApoloPi!
 
-MathLingo é uma plataforma divertida e interativa para aprender matemática, inspirada no estilo do Duolingo. Pratique conceitos matemáticos de forma gamificada com desafios cronometrados, recompensas e mascotes carismáticos que guiam sua jornada de aprendizado.
+ApoloPi é uma plataforma divertida e interativa para aprender matemática, inspirada no estilo do Duolingo. Pratique conceitos matemáticos de forma gamificada com desafios cronometrados, recompensas e mascotes carismáticos que guiam sua jornada de aprendizado.
 
 ## Visão Geral
 
-MathLingo é um projeto full-stack desenvolvido com:
+ApoloPi é um projeto full-stack desenvolvido com:
 - Backend: Node.js
 - Frontend: HTML/CSS/JavaScript
 - Banco de Dados: MySQL
@@ -48,7 +48,7 @@ MathLingo é um projeto full-stack desenvolvido com:
 ## Estrutura do Projeto
 
 ```
-MathLingo/
+ApoloPi/
 ├── .gitignore
 ├── arvore_filtrada.txt
 ├── database.sql
@@ -143,8 +143,8 @@ MathLingo/
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/MathLingo.git
-cd MathLingo
+git clone https://github.com/seu-usuario/ApoloPi.git
+cd ApoloPi
 ```
 
 2. Instale as dependências do backend
