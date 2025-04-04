@@ -1,33 +1,26 @@
-name: Replace Localhost URLs
+name: Check for Localhost URLs
 
 on: 
   pull_request:
     branches:
-      - main  # Ou a branch principal que você usa
+      - main 
 
 jobs:
-  replace-urls:
+  check-localhost:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Replace Localhost URLs
+      - name: Search for 'localhost' references
         run: |
-          find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" \) \
-            -exec sed -i 's|http://localhost:3000|https://apolopi.onrender.com|g' {} +
-          find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.json" \) \
-            -exec sed -i 's|localhost:3000|https://apolopi.onrender.com|g' {} +
+          echo "🔍 Procurando por URLs com 'localhost'..."
+          MATCHES=$(grep -rnw '.' -e 'localhost:3000' --include=\*.{js,jsx,ts,tsx,json} || true)
 
-      - name: Commit Changes
-        run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add .
-          git diff --staged --quiet || git commit -m "Replace localhost URLs with https://apolopi.onrender.com"
-          git push
-
-      - name: Create Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: url-replacements
-          path: .
+          if [ -n "$MATCHES" ]; then
+            echo "🚨 Foram encontradas referências a 'localhost:3000':"
+            echo "$MATCHES"
+            echo "❌ Por favor, substitua 'localhost:3000' por 'https://apolopi.onrender.com' antes de fazer o pull request."
+            exit 1
+          else
+            echo "✅ Nenhuma referência a 'localhost:3000' encontrada."
+          fi
