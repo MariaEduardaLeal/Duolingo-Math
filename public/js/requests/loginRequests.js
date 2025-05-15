@@ -6,7 +6,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const errorMessage = document.getElementById('error-message');
   
     try {
-      const response = await axios.post('https://mathlingo.onrender.com/api/login', {
+      const response = await axios.post('http://localhost:3000/api/login', {
         email,
         password
       });
