@@ -7,11 +7,6 @@ const Phase = sequelize.define('Phase', {
     autoIncrement: true,
     primaryKey: true
   },
-  phase_number: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true
-  },
   title: {
     type: DataTypes.STRING(100),
     allowNull: false

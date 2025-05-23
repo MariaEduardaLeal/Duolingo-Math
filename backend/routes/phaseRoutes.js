@@ -14,8 +14,8 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
     }
     const progress = await UserProgress.findAll({
       where: { user_id: userId },
-      include: [{ model: Phase, attributes: ['phase_number'] }],
-      order: [[{ model: Phase, as: 'Phase' }, 'phase_number', 'ASC']]
+      include: [{ model: Phase, attributes: ['id'] }],
+      order: [[{ model: Phase, as: 'Phase' }, 'id', 'ASC']]
     });
 
     if (!progress || progress.length === 0) {
@@ -23,7 +23,7 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
     }
 
     const maxPhase = progress.reduce((max, record) => {
-      const phaseNumber = record.Phase.phase_number;
+      const phaseNumber = record.Phase.id;
       return record.completed && phaseNumber > max ? phaseNumber : max;
     }, 0);
 

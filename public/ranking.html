@@ -5,16 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking - Apolo π</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 z-50">
+        <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
             <div class="p-4 flex flex-col h-full">
+                <!-- Botão de fechar (X) -->
+                <button id="close-sidebar" class="self-end p-2 text-white hover:bg-gray-700 rounded">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <!-- Ícone da Laika -->
                 <div class="flex justify-center mb-6">
                     <img src="/assets/laika_astronaut.png" alt="Laika" class="w-16 h-16 rounded-full">
                 </div>
+                <!-- Navegação -->
                 <nav class="flex-1">
                     <ul class="space-y-2">
                         <li>
@@ -54,8 +63,8 @@
             </div>
         </div>
 
-        <!-- Botão de toggle para mobile -->
-        <button id="toggle-sidebar" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md">
+        <!-- Botão de toggle (quadradinho) -->
+        <button id="toggle-sidebar" class="fixed top-4 left-4 z-50 w-12 h-12 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-gray-700 shadow-md">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
@@ -72,6 +81,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="/js/animate/animations.js"></script>
+    <script src="/js/sidebar.js"></script>
     <script src="/js/ranking.js"></script>
 </body>
 </html>

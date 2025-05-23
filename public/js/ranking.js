@@ -2,50 +2,49 @@
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('ranking.js carregado');
 
-  if (typeof createStars === 'function') createStars();
-  if (typeof setupPlanet === 'function') setupPlanet();
-
-  const toggleButton = document.getElementById('toggle-sidebar');
-  const sidebar = document.getElementById('sidebar');
-  const logoutButton = document.getElementById('logout');
-
-  if (toggleButton && sidebar && logoutButton) {
-    toggleButton.addEventListener('click', () => {
-      sidebar.classList.toggle('translate-x-0');
-      sidebar.classList.toggle('-translate-x-full');
-    });
-
-    logoutButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem('userId');
-      localStorage.removeItem('token');
-      window.location.href = '/login.html';
-    });
-  } else {
-    console.error('Elementos do sidebar não encontrados');
+  // Carregar animações de fundo
+  if (typeof createStars === 'function') {
+    console.log('Executando createStars');
+    createStars();
+  }
+  if (typeof setupPlanet === 'function') {
+    console.log('Executando setupPlanet');
+    setupPlanet();
   }
 
   const rankingList = document.getElementById('ranking-list');
   const token = localStorage.getItem('token');
 
+  if (!rankingList) {
+    console.error('Elemento #ranking-list não encontrado');
+    return;
+  }
+
   try {
+    console.log('Buscando dados do ranking');
     const response = await fetch('http://localhost:3000/api/ranking', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error('Erro ao buscar ranking');
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.status}`);
+    }
     const ranking = await response.json();
+    console.log('Dados do ranking recebidos:', ranking);
+
+    rankingList.innerHTML = ''; // Limpar qualquer conteúdo existente
 
     ranking.forEach((user, index) => {
       const rankItem = document.createElement('div');
       rankItem.classList.add('flex', 'items-center', 'p-4', 'bg-gray-800', 'rounded', 'shadow');
       rankItem.innerHTML = `
         <span class="text-2xl font-bold mr-4">${index + 1}º</span>
-        <img src="/assets/${user.avatar}" class="w-12 h-12 rounded-full mr-4" alt="${user.name}">
+        <img src="/assets/${user.avatar}" class="w-12 h-12 rounded-full mr-4" alt="${user.name}" onerror="this.src='/assets/laika_astronaut.png'">
         <span class="flex-1">${user.name}</span>
         <span class="text-yellow-400">${user.totalStars} ⭐</span>
       `;
       rankingList.appendChild(rankItem);
 
+      // Animação GSAP
       gsap.from(rankItem, {
         opacity: 0,
         y: 20,
@@ -54,8 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ease: 'power2.out'
       });
     });
+
+    console.log('Ranking renderizado com sucesso, total de usuários:', ranking.length);
   } catch (error) {
-    console.error('Erro:', error);
-    rankingList.innerHTML = '<p class="text-red-600">Erro ao carregar ranking.</p>';
+    console.error('Erro ao carregar ranking:', error);
+    rankingList.innerHTML = '<p class="text-red-600 text-center">Erro ao carregar o ranking. Tente novamente.</p>';
   }
 });
