@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentQuestion = 0;
   let errors = 0;
   const maxErrors = 3;
-  let totalTime = 90; // Tempo total em segundos
-  let intervalTime = 0.1; // Intervalo base em segundos
+  let totalTime = 90; 
+  let intervalTime = 0.1; 
   let selectedOption = null;
 
   // Atualizar barra de progresso
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const question = questions[currentQuestion];
       questionsContainer.innerHTML = `
           <div class="question-container">
-              <p class="text-lg font-semibold mb-2">Questão ${question.question_number}: ${question.question_text}</p>
+              <p class="text-lg font-semibold mb-2">Questão : ${question.question_text}</p>
               <div class="options">
                   <div class="option" data-option="a">${question.option_a}</div>
                   <div class="option" data-option="b">${question.option_b}</div>
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           currentQuestion++;
           setTimeout(carregarPergunta, 1000);
       } else {
-          totalTime -= 5; // Perde 5 segundos
+          totalTime -= 5; // Perde 3 segundos
           showTimeChange(-5);
           loseQuestionSound.play(); // Toca som de erro da questão
           errors++;

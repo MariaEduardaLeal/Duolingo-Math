@@ -3,7 +3,8 @@ const { authenticateToken } = require('./authRoutes');
 const router = express.Router();
 const UserProgress = require('../models/UserProgress');
 const Phase = require('../models/Phase');
-const Question = require('../models/Question'); // Importar o modelo Question
+const Question = require('../models/Question'); 
+const { Sequelize } = require('sequelize');
 
 // Rota para obter o progresso do usuário (protegida)
 router.get('/progress/:userId', authenticateToken, async (req, res) => {
@@ -58,12 +59,16 @@ router.post('/progress', authenticateToken, async (req, res) => {
 });
 
 // Nova rota para buscar questões de uma fase (protegida)
+// Rota para buscar questões de uma fase (protegida) - CORRIGIDA
 router.get('/questions/:phaseId', authenticateToken, async (req, res) => {
   try {
     const phaseId = parseInt(req.params.phaseId);
+    
+    // Busca 10 questões aleatórias da fase
     const questions = await Question.findAll({
       where: { phase_id: phaseId },
-      order: [['question_number', 'ASC']]
+      order: Sequelize.literal('RAND()'), 
+      limit: 10
     });
 
     if (!questions || questions.length === 0) {
