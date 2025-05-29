@@ -3,9 +3,10 @@ const { authenticateToken } = require('./authRoutes');
 const router = express.Router();
 const UserProgress = require('../models/UserProgress');
 const Phase = require('../models/Phase');
-const Question = require('../models/Question'); // Importar o modelo Question
+const Question = require('../models/Question'); 
+const { Sequelize } = require('sequelize');
 
-// Rota para obter o progresso do usuário (protegida)
+// Rota para obter o progresso do usuário 
 router.get('/progress/:userId', authenticateToken, async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
@@ -14,8 +15,8 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
     }
     const progress = await UserProgress.findAll({
       where: { user_id: userId },
-      include: [{ model: Phase, attributes: ['phase_number'] }],
-      order: [[{ model: Phase, as: 'Phase' }, 'phase_number', 'ASC']]
+      include: [{ model: Phase, attributes: ['id'] }],
+      order: [[{ model: Phase, as: 'Phase' }, 'id', 'ASC']]
     });
 
     if (!progress || progress.length === 0) {
@@ -23,7 +24,7 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
     }
 
     const maxPhase = progress.reduce((max, record) => {
-      const phaseNumber = record.Phase.phase_number;
+      const phaseNumber = record.Phase.id;
       return record.completed && phaseNumber > max ? phaseNumber : max;
     }, 0);
 
@@ -34,7 +35,7 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
   }
 });
 
-// Rota para atualizar o progresso do usuário (protegida)
+// Rota para atualizar o progresso do usuário 
 router.post('/progress', authenticateToken, async (req, res) => {
   try {
     const { userId, phaseId, starsEarned, completed } = req.body;
@@ -57,13 +58,17 @@ router.post('/progress', authenticateToken, async (req, res) => {
   }
 });
 
-// Nova rota para buscar questões de uma fase (protegida)
+
+// Rota para buscar questões de uma fase
 router.get('/questions/:phaseId', authenticateToken, async (req, res) => {
   try {
     const phaseId = parseInt(req.params.phaseId);
+    
+    // Busca 10 questões aleatórias da fase
     const questions = await Question.findAll({
       where: { phase_id: phaseId },
-      order: [['question_number', 'ASC']]
+      order: Sequelize.literal('RAND()'), 
+      limit: 10
     });
 
     if (!questions || questions.length === 0) {

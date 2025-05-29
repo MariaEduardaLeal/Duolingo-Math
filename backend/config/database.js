@@ -18,8 +18,8 @@ const sequelize = new Sequelize({
   logging: false,
   dialectOptions: {
     ssl: {
-      require: true, // Exige SSL
-      rejectUnauthorized: true // Garante que o certificado seja validado
+      require: false, // Exige SSL
+      rejectUnauthorized: false // Garante que o certificado seja validado
     }
   }
 });

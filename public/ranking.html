@@ -1,10 +1,11 @@
+<!-- public/ranking.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Fases - Apolo π</title>
-    <link rel="stylesheet" href="/css/phases.css">
+    <title>Ranking - Apolo π</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
@@ -72,8 +73,8 @@
         <!-- Conteúdo principal -->
         <div class="flex-1 space-background">
             <div class="container mx-auto p-4">
-                <h1>Mapa de Fases</h1>
-                <div id="phases-container" class="phases-container"></div>
+                <h1 class="text-3xl font-bold mb-6 text-center">Ranking de Astronautas</h1>
+                <div id="ranking-list" class="space-y-4"></div>
             </div>
         </div>
     </div>
@@ -81,6 +82,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="/js/animate/animations.js"></script>
     <script src="/js/sidebar.js"></script>
-    <script src="/js/phases.js"></script>
+    <script src="/js/ranking.js"></script>
 </body>
 </html>

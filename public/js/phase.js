@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Buscar questões da fase
   const fetchQuestions = async () => {
       try {
-          const response = await fetch(`https://mathlingo.onrender.com/api/questions/${phaseId}`, {
+          const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
               headers: { 'Authorization': `Bearer ${token}` }
           });
           if (!response.ok) throw new Error('Erro ao buscar questões');
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Buscar título da fase
   const fetchPhaseTitle = async () => {
       try {
-          const response = await fetch(`https://mathlingo.onrender.com/api/phases/${phaseId}`, {
+          const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
               headers: { 'Authorization': `Bearer ${token}` }
 
           });
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentQuestion = 0;
   let errors = 0;
   const maxErrors = 3;
-  let totalTime = 90; // Tempo total em segundos
-  let intervalTime = 0.1; // Intervalo base em segundos
+  let totalTime = 90; 
+  let intervalTime = 0.1; 
   let selectedOption = null;
 
   // Atualizar barra de progresso
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const question = questions[currentQuestion];
       questionsContainer.innerHTML = `
           <div class="question-container">
-              <p class="text-lg font-semibold mb-2">Questão ${question.question_number}: ${question.question_text}</p>
+              <p class="text-lg font-semibold mb-2">Questão : ${question.question_text}</p>
               <div class="options">
                   <div class="option" data-option="a">${question.option_a}</div>
                   <div class="option" data-option="b">${question.option_b}</div>
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           currentQuestion++;
           setTimeout(carregarPergunta, 1000);
       } else {
-          totalTime -= 5; // Perde 5 segundos
+          totalTime -= 5; // Perde 3 segundos
           showTimeChange(-5);
           loseQuestionSound.play(); // Toca som de erro da questão
           errors++;
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const completePhase = () => {
       clearInterval(interval);
       const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
-      fetch('https://mathlingo.onrender.com/api/progress', {
+      fetch('http://localhost:3000/api/progress', {
     
           method: 'POST',
 
