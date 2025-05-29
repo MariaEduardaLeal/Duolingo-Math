@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const sequelize = require('./config/database');
-const phaseRoutes = require('./routes/phaseRoutes');
+const phaseRoutes = require('./routes/phaseRoutes'); 
+const userRoutes = require('./routes/userRoutes'); 
 const { router: authRoutes } = require('./routes/authRoutes'); 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api', phaseRoutes);
 app.use('/api', authRoutes);
+app.use('/api', userRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));

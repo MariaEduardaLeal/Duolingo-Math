@@ -6,7 +6,7 @@ const Phase = require('../models/Phase');
 const Question = require('../models/Question'); 
 const { Sequelize } = require('sequelize');
 
-// Rota para obter o progresso do usuário (protegida)
+// Rota para obter o progresso do usuário 
 router.get('/progress/:userId', authenticateToken, async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
@@ -35,7 +35,7 @@ router.get('/progress/:userId', authenticateToken, async (req, res) => {
   }
 });
 
-// Rota para atualizar o progresso do usuário (protegida)
+// Rota para atualizar o progresso do usuário 
 router.post('/progress', authenticateToken, async (req, res) => {
   try {
     const { userId, phaseId, starsEarned, completed } = req.body;
@@ -58,8 +58,8 @@ router.post('/progress', authenticateToken, async (req, res) => {
   }
 });
 
-// Nova rota para buscar questões de uma fase (protegida)
-// Rota para buscar questões de uma fase (protegida) - CORRIGIDA
+
+// Rota para buscar questões de uma fase
 router.get('/questions/:phaseId', authenticateToken, async (req, res) => {
   try {
     const phaseId = parseInt(req.params.phaseId);

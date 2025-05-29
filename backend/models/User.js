@@ -34,7 +34,7 @@ const User = sequelize.define('User', {
   }
 }, {
   tableName: 'users',
-  timestamps: false // Gerenciado manualmente pelas colunas created_at e updated_at
+  timestamps: false 
 });
 
 module.exports = User;
