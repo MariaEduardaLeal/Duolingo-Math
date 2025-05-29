@@ -1,236 +1,350 @@
-CREATE DATABASE math_duolingo;
-USE math_duolingo;
+-- --------------------------------------------------------
+-- Servidor:                     127.0.0.1
+-- Versão do servidor:           8.0.41 - MySQL Community Server - GPL
+-- OS do Servidor:               Win64
+-- HeidiSQL Versão:              12.10.0.7000
+-- --------------------------------------------------------
 
--- Tabela de Usuários
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- Armazene hash (ex.: bcrypt)
-    avatar VARCHAR(255) DEFAULT 'cute_rocket.png',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Tabela de Fases
-DROP TABLE IF EXISTS phases;
-CREATE TABLE phases (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    phase_number INT NOT NULL UNIQUE,
-    title VARCHAR(100) NOT NULL,
-    description TEXT,
-    required_stars INT DEFAULT 3,
-    explanation TEXT
-);
-
--- Tabela de Progresso do Usuário
-CREATE TABLE user_progress (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    phase_id INT NOT NULL,
-    stars_earned INT DEFAULT 0, -- 0 a 5
-    completed BOOLEAN DEFAULT FALSE,
-    last_attempt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (phase_id) REFERENCES phases(id),
-    UNIQUE (user_id, phase_id) -- Um progresso por fase por usuário
-);
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
+-- Copiando estrutura do banco de dados para math_duolingo
+DROP DATABASE IF EXISTS `math_duolingo`;
+CREATE DATABASE IF NOT EXISTS `math_duolingo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `math_duolingo`;
 
-INSERT INTO phases (phase_number, title, description, explanation) VALUES
-(1, 'Estrelas', 'Operações básicas: Adição e subtração', 'Aprenda a somar e subtrair números inteiros para começar sua jornada espacial.'),
-(2, 'Foguetes', 'Multiplicação', 'Domine a multiplicação para lançar foguetes ao espaço.'),
-(3, 'Planeta Vermelho', 'Divisão', 'Pratique a divisão para explorar o terreno marciano.'),
-(4, 'Lua Cheia', 'Equações com operações mistas', 'Resolva equações simples combinando adição, subtração, multiplicação e divisão.'),
-(5, 'Anéis de Saturno', 'Geometria: Perímetros de polígonos', 'Calcule perímetros de figuras como triângulos e quadrados.'),
-(6, 'Cometas', 'Geometria: Áreas de polígonos', 'Descubra como calcular áreas de figuras planas.'),
-(7, 'Astronautas', 'Geometria: Ângulos', 'Entenda ângulos em triângulos e outras figuras.'),
-(8, 'Nebulosa', 'Geometria: Círculos (perímetro e área)', 'Explore círculos, calculando circunferência e área.'),
-(9, 'Estação Espacial', 'Geometria: Volume de cubos e paralelepípedos', 'Calcule volumes de sólidos tridimensionais simples.'),
-(10, 'Buraco Negro', 'Geometria: Teorema de Pitágoras', 'Use o Teorema de Pitágoras para resolver triângulos retângulos.'),
-(11, 'Via Láctea', 'Geometria: Semelhança de triângulos', 'Aplique a semelhança para resolver problemas geométricos.'),
-(12, 'Sol Brilhante', 'Álgebra: Frações (soma e subtração)', 'Some e subtraia frações com denominadores diferentes.'),
-(13, 'Marte', 'Álgebra: Frações (multiplicação e divisão)', 'Multiplique e divida frações para planejar missões.'),
-(14, 'Júpiter', 'Álgebra: Expoentes básicos', 'Entenda potências e suas propriedades.'),
-(15, 'Órbita', 'Álgebra: Equações lineares com uma variável', 'Resolva equações do tipo ax + b = c.'),
-(16, 'Asteroides', 'Álgebra: Sistemas de equações lineares', 'Resolva sistemas com duas variáveis.'),
-(17, 'Galáxia', 'Álgebra: Expoentes avançados', 'Trabalhe com expoentes negativos e frações.'),
-(18, 'Nave Espacial', 'Álgebra: Inequações lineares', 'Resolva inequações para navegar pelo espaço.'),
-(19, 'Planeta Gelado', 'Funções de segundo grau', 'Explore parábolas e resolva equações quadráticas.'),
-(20, 'Universo', 'Desafio cósmico misto', 'Resolva problemas que combinam operações, geometria e álgebra!');
+-- Copiando estrutura para tabela math_duolingo.phases
+DROP TABLE IF EXISTS `phases`;
+CREATE TABLE IF NOT EXISTS `phases` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` text,
+  `required_stars` int DEFAULT '3',
+  `explanation` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Copiando dados para a tabela math_duolingo.phases: ~20 rows (aproximadamente)
+DELETE FROM `phases`;
+INSERT INTO `phases` (`id`, `title`, `description`, `required_stars`, `explanation`) VALUES
+	(1, 'Produto Cartesiano', 'Forme pares ordenados com produto cartesiano.', 3, 'Aprenda a criar o produto cartesiano entre dois conjuntos.'),
+	(2, 'Operações com Conjuntos', 'Pratique união, interseção e diferença de conjuntos.', 3, 'Entenda como manipular conjuntos com operações básicas.'),
+	(3, 'Conjunto Potência', 'Explore o conjunto potência de conjuntos.', 3, 'Descubra como formar todos os subconjuntos de um conjunto.'),
+	(4, 'Funções de Primeiro Grau: Inclinação e Intercepto', 'Calcule inclinação e interceptos de retas.', 3, 'Domine as propriedades de funções lineares.'),
+	(5, 'Funções de Primeiro Grau: Equações', 'Resolva equações lineares.', 3, 'Aprenda a encontrar soluções de equações do tipo ax + b = c.'),
+	(6, 'Funções de Segundo Grau: Vértice', 'Determine o vértice de parábolas.', 3, 'Entenda o ponto de máximo ou mínimo de funções quadráticas.'),
+	(7, 'Funções de Segundo Grau: Raízes', 'Encontre as raízes de equações quadráticas.', 3, 'Use fórmulas e fatoração para resolver x² + bx + c = 0.'),
+	(8, 'Polinômios: Operações', 'Some e subtraia polinômios.', 3, 'Manipule expressões polinomiais com facilidade.'),
+	(9, 'Polinômios: Grau e Coeficientes', 'Identifique grau e coeficientes de polinômios.', 3, 'Entenda a estrutura de polinômios.'),
+	(10, 'Divisão de Polinômios', 'Divida polinômios usando divisão sintética ou longa.', 3, 'Aprenda a encontrar quocientes e restos.'),
+	(11, 'Fatoração de Polinômios', 'Fatore expressões polinomiais.', 3, 'Domine técnicas como diferença de quadrados e trinômios.'),
+	(12, 'Simplificação de Frações Algébricas', 'Reduza frações algébricas à forma mais simples.', 3, 'Simplifique expressões racionais.'),
+	(13, 'Operações com Frações Algébricas', 'Some e subtraia frações algébricas.', 3, 'Trabalhe com expressões racionais combinadas.'),
+	(14, 'Vetores: Soma e Subtração', 'Realize operações com vetores no plano.', 3, 'Some e subtraia vetores usando coordenadas.'),
+	(15, 'Vetores: Módulo', 'Calcule o módulo de vetores.', 3, 'Meça a magnitude de vetores no plano.'),
+	(16, 'Vetores: Versor', 'Determine o versor de vetores.', 3, 'Normalize vetores para obter vetores unitários.'),
+	(17, 'Vetores: Produto Escalar', 'Calcule o produto escalar entre vetores.', 3, 'Use o produto escalar para explorar relações entre vetores.'),
+	(18, 'Limites: Forma 0/0', 'Resolva limites indeterminados do tipo 0/0.', 3, 'Aplique simplificações e L’Hôpital para limites.'),
+	(19, 'Limites: No Infinito', 'Calcule limites quando x tende ao infinito.', 3, 'Analise o comportamento assintótico de funções.'),
+	(20, 'Integrais: Antiderivadas e Definidas', 'Encontre antiderivadas e calcule integrais definidas.', 3, 'Domine a integração para encontrar áreas e somas.');
 
-CREATE TABLE questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    phase_id INT NOT NULL,
-    question_number INT NOT NULL, -- 1 a 5
-    question_text TEXT NOT NULL, -- Ex.: "Qual é o valor de y quando x = 2 na equação y = 3x + 1?"
-    option_a VARCHAR(255) NOT NULL, -- Ex.: "4"
-    option_b VARCHAR(255) NOT NULL, -- Ex.: "7"
-    option_c VARCHAR(255) NOT NULL, -- Ex.: "5"
-    option_d VARCHAR(255) NOT NULL, -- Ex.: "8"
-    correct_option CHAR(1) NOT NULL, -- 'a', 'b', 'c' ou 'd'
-    FOREIGN KEY (phase_id) REFERENCES phases(id),
-    UNIQUE (phase_id, question_number) -- Uma pergunta por número por fase
-);
+-- Copiando estrutura para tabela math_duolingo.questions
+DROP TABLE IF EXISTS `questions`;
+CREATE TABLE IF NOT EXISTS `questions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `phase_id` int NOT NULL,
+  `question_number` int NOT NULL,
+  `question_text` text NOT NULL,
+  `option_a` varchar(255) NOT NULL,
+  `option_b` varchar(255) NOT NULL,
+  `option_c` varchar(255) NOT NULL,
+  `option_d` varchar(255) NOT NULL,
+  `correct_option` char(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phase_id` (`phase_id`,`question_number`),
+  CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`phase_id`) REFERENCES `phases` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Fase 1
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(1, 1, 'Quanto é 15 + 27?', '40', '42', '45', '38', 'b'),
-(1, 2, 'Qual é o resultado de 34 - 19?', '15', '13', '17', '14', 'a'),
-(1, 3, 'Quanto é -8 + 12?', '2', '4', '-4', '6', 'b'),
-(1, 4, 'Se você subtrai 25 de 50, qual é o resultado?', '20', '25', '30', '15', 'b'),
-(1, 5, 'Qual é o valor de 9 + (-5)?', '4', '5', '3', '14', 'a');
+-- Copiando dados para a tabela math_duolingo.questions: ~225 rows (aproximadamente)
+DELETE FROM `questions`;
+INSERT INTO `questions` (`id`, `phase_id`, `question_number`, `question_text`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`) VALUES
+	(1, 1, 1, 'Qual é o produto cartesiano {1, 2} × {a, b}?', '{(1,2), (a,b)}', '{(1,a), (1,b), (2,a), (2,b)}', '{(1,a), (2,b)}', '{(a,1), (b,2)}', 'b'),
+	(2, 1, 2, 'Quantos elementos tem {x, y} × {1, 2, 3}?', '4', '8', '6', '5', 'c'),
+	(3, 1, 3, 'Se A = {3, 4} e B = {5}, qual é A × B?', '{(3,5), (4,5)}', '{(5,3), (5,4)}', '{(3,4), (4,5)}', '{(5,5)}', 'a'),
+	(4, 1, 4, 'Qual é {a} × {1, 2}?', '{(1,a), (2,a)}', '{(a,a)}', '{(1,2)}', '{(a,1), (a,2)}', 'd'),
+	(5, 1, 5, 'Quantos elementos tem {1, 2, 3} × {4, 5}?', '5', '6', '8', '4', 'b'),
+	(6, 1, 6, 'Se A = {p, q} e B = {r}, qual é A × B?', '{(r,p), (r,q)}', '{(p,q)}', '{(p,r), (q,r)}', '{(r,r)}', 'c'),
+	(7, 1, 7, 'Qual é o produto cartesiano {0} × {0, 1}?', '{(0,0), (0,1)}', '{(0,0)}', '{(1,0)}', '{(0,1)}', 'a'),
+	(8, 1, 8, 'Quantos elementos tem {a, b, c} × {x, y}?', '5', '4', '8', '6', 'd'),
+	(9, 1, 9, 'Se A = {1} e B = {2, 3}, qual é B × A?', '{(1,2), (1,3)}', '{(2,1), (3,1)}', '{(2,3)}', '{(1,1)}', 'b'),
+	(10, 1, 10, 'Qual é {m, n} × {p, q}?', '{(m,n), (p,q)}', '{(m,p), (n,q)}', '{(m,p), (m,q), (n,p), (n,q)}', '{(p,m), (q,n)}', 'c'),
+	(11, 1, 11, 'Quantos elementos tem {1, 2} × {1, 2, 3, 4}?', '6', '10', '4', '8', 'd'),
+	(12, 1, 12, 'Se A = {x} e B = {y, z}, qual é A × B?', '{(y,x), (z,x)}', '{(x,y), (x,z)}', '{(x,x)}', '{(y,z)}', 'b'),
+	(13, 1, 13, 'Qual é {5, 6} × {7}?', '{(7,5), (7,6)}', '{(5,6)}', '{(5,7), (6,7)}', '{(7,7)}', 'c'),
+	(14, 1, 14, 'Quantos elementos tem {a} × {b, c, d}?', '4', '2', '5', '3', 'd'),
+	(15, 1, 15, 'Qual é o produto cartesiano {2} × {3, 4}?', '{(3,2), (4,2)}', '{(2,2)}', '{(3,4)}', '{(2,3), (2,4)}', 'd'),
+	(16, 2, 1, 'Se A = {1, 2, 3} e B = {2, 3, 4}, qual é A ∩ B?', '{1, 4}', '{2, 3}', '{1, 2, 3, 4}', '∅', 'b'),
+	(17, 2, 2, 'Qual é A ∪ B para A = {1, 3} e B = {3, 5}?', '{3}', '{1, 5}', '{1, 3, 5}', '{1, 3}', 'c'),
+	(18, 2, 3, 'Se A = {a, b} e B = {b, c}, qual é A ∖ B?', '{a}', '{b}', '{c}', '∅', 'a'),
+	(19, 2, 4, 'Qual é A ∩ B para A = {x, y, z} e B = {y, z, w}?', '{x, w}', '{x, y, z, w}', '∅', '{y, z}', 'd'),
+	(20, 2, 5, 'Se A = {1, 2} e B = {3, 4}, qual é A ∪ B?', '{1, 2}', '{1, 2, 3, 4}', '{3, 4}', '∅', 'b'),
+	(21, 2, 6, 'Qual é A ∖ B para A = {p, q, r} e B = {q, s}?', '{q}', '{s}', '{p, r}', '{p, q, r}', 'c'),
+	(22, 2, 7, 'Se A = {2, 4, 6} e B = {4, 6, 8}, qual é A ∩ B?', '{2, 8}', '{2, 4, 6, 8}', '∅', '{4, 6}', 'd'),
+	(23, 2, 8, 'Qual é A ∪ B para A = {m, n} e B = {n, o}?', '{m, n, o}', '{n}', '{m, o}', '∅', 'a'),
+	(24, 2, 9, 'Se A = {1, 3, 5} e B = {2, 4, 6}, qual é A ∩ B?', '{1, 2}', '∅', '{3, 4}', '{5, 6}', 'b'),
+	(25, 2, 10, 'Qual é A ∖ B para A = {x, y} e B = {y, z}?', '{y}', '{z}', '{x}', '∅', 'c'),
+	(26, 2, 11, 'Se A = {a, b, c} e B = {b, c, d}, qual é A ∪ B?', '{b, c}', '{a, d}', '∅', '{a, b, c, d}', 'd'),
+	(27, 2, 12, 'Qual é A ∩ B para A = {1, 2, 3, 4} e B = {2, 4, 6}?', '{2, 4}', '{1, 3, 6}', '{1, 2, 3, 4, 6}', '∅', 'a'),
+	(28, 2, 13, 'Se A = {p} e B = {p, q}, qual é A ∖ B?', '{p}', '∅', '{q}', '{p, q}', 'b'),
+	(29, 2, 14, 'Qual é A ∪ B para A = {5, 6} e B = {6, 7}?', '{6}', '{5, 7}', '{5, 6, 7}', '∅', 'c'),
+	(30, 2, 15, 'Se A = {x, y, z} e B = {w, x}, qual é A ∩ B?', '{y, z, w}', '{x, y, z, w}', '∅', '{x}', 'd'),
+	(31, 3, 1, 'Qual é o conjunto potência de {1}?', '{{1}}', '{∅, {1}}', '{∅}', '{{1}, {2}}', 'b'),
+	(32, 3, 2, 'Quantos elementos tem o conjunto potência de {a, b}?', '2', '3', '4', '6', 'c'),
+	(33, 3, 3, 'Qual é o conjunto potência de ∅?', '{∅}', '∅', '{{∅}}', '{∅, {∅}}', 'a'),
+	(34, 3, 4, 'Se A = {x, y}, qual é o conjunto potência de A?', '{{x}, {y}}', '{∅, {x, y}}', '{{x, y}}', '{∅, {x}, {y}, {x, y}}', 'd'),
+	(35, 3, 5, 'Quantos elementos tem o conjunto potência de {1, 2, 3}?', '6', '8', '4', '9', 'b'),
+	(36, 3, 6, 'Qual é o conjunto potência de {p}?', '{{p}}', '{∅}', '{∅, {p}}', '{{p}, {q}}', 'c'),
+	(37, 3, 7, 'Se A = {m, n}, qual é um subconjunto de A presente no conjunto potência?', '{m}', '{m, n, o}', '{o}', '∅', 'a'),
+	(38, 3, 8, 'Quantos elementos tem o conjunto potência de {a, b, c, d}?', '8', '12', '4', '16', 'd'),
+	(39, 3, 9, 'Qual é o conjunto potência de {2, 3}?', '{{2}, {3}}', '{∅, {2, 3}}', '{∅, {2}, {3}, {2, 3}}', '{{2, 3}}', 'c'),
+	(40, 3, 10, 'Se A = {x}, quantos elementos tem o conjunto potência de A?', '1', '2', '3', '4', 'b'),
+	(41, 3, 11, 'Qual é o conjunto potência de {1, 2}?', '{∅, {1}, {2}, {1, 2}}', '{{1}, {2}}', '{∅, {1, 2}}', '{{1, 2}}', 'a'),
+	(42, 3, 12, 'Quantos elementos tem o conjunto potência de {p, q, r}?', '6', '4', '9', '8', 'd'),
+	(43, 3, 13, 'Se A = {a, b}, qual é um elemento do conjunto potência de A?', '{a, b, c}', '{c}', '{a, b}', '{a, c}', 'c'),
+	(44, 3, 14, 'Qual é o conjunto potência de {5}?', '{{5}}', '{∅, {5}}', '{∅}', '{{5}, {6}}', 'b'),
+	(45, 3, 15, 'Quantos elementos tem o conjunto potência de {x, y, z}?', '6', '4', '9', '8', 'd'),
+	(46, 4, 1, 'Qual é a inclinação da função y = 2x + 3?', '3', '2', '-2', '1', 'b'),
+	(47, 4, 2, 'Qual é o intercepto da função y = -x + 5?', '-1', '0', '5', '-5', 'c'),
+	(48, 4, 3, 'A inclinação da reta que passa pelos pontos (1, 2) e (3, 6) é:', '1', '3', '-2', '2', 'd'),
+	(49, 4, 4, 'Qual é a inclinação da função y = -3x - 4?', '-3', '3', '-4', '0', 'a'),
+	(50, 4, 5, 'Qual é o intercepto da função y = 4x - 7?', '4', '-7', '7', '0', 'b'),
+	(51, 4, 6, 'A inclinação da reta que passa pelos pontos (0, 1) e (2, 5) é:', '1', '3', '2', '4', 'c'),
+	(52, 4, 7, 'Qual é a inclinação da função y = x?', '0', '-1', '2', '1', 'd'),
+	(53, 4, 8, 'Qual é o intercepto da função y = 2x?', '0', '2', '1', '-2', 'a'),
+	(54, 4, 9, 'A inclinação da reta que passa pelos pontos (-1, 3) e (1, -1) é:', '2', '-2', '-1', '1', 'b'),
+	(55, 4, 10, 'Qual é a inclinação da função y = -2x + 1?', '2', '1', '-2', '-1', 'c'),
+	(56, 4, 11, 'Qual é o intercepto da função y = x - 3?', '1', '3', '0', '-3', 'd'),
+	(57, 4, 12, 'A inclinação da reta que passa pelos pontos (2, 4) e (4, 8) é:', '2', '1', '4', '3', 'a'),
+	(58, 4, 13, 'Qual é a inclinação da função y = 0.5x + 2?', '2', '0.5', '-0.5', '1', 'b'),
+	(59, 4, 14, 'Qual é o intercepto da função y = -5x + 10?', '-5', '5', '10', '0', 'c'),
+	(60, 4, 15, 'A inclinação da reta que passa pelos pontos (3, 1) e (5, -3) é:', '-1', '2', '1', '-2', 'd'),
+	(61, 5, 1, 'Resolva a equação 2x + 3 = 7. Qual é o valor de x?', '3', '2', '1', '4', 'b'),
+	(62, 5, 2, 'Qual é a solução de x - 5 = 2?', '3', '-3', '7', '-7', 'c'),
+	(63, 5, 3, 'Resolva 3x = 12. Qual é o valor de x?', '3', '6', '12', '4', 'd'),
+	(64, 5, 4, 'Encontre x na equação -x + 4 = 1.', '3', '-3', '4', '-4', 'a'),
+	(65, 5, 5, 'Resolva 5x - 10 = 0. Qual é o valor de x?', '5', '2', '10', '0', 'b'),
+	(66, 5, 6, 'Qual é a solução de 2x + 1 = x + 4?', '2', '1', '3', '4', 'c'),
+	(67, 5, 7, 'Resolva 4x + 2 = 10. Qual é o valor de x?', '3', '1', '4', '2', 'd'),
+	(68, 5, 8, 'Encontre x na equação x + 3 = -2.', '-5', '-3', '2', '5', 'a'),
+	(69, 5, 9, 'Resolva 3x - 6 = 2x. Qual é o valor de x?', '3', '6', '2', '0', 'b'),
+	(70, 5, 10, 'Qual é a solução de -2x + 8 = 4?', '-2', '4', '2', '-4', 'c'),
+	(71, 5, 11, 'Resolva x - 7 = -3. Qual é o valor de x?', '-4', '3', '-3', '4', 'd'),
+	(72, 5, 12, 'Encontre x na equação 2x + 5 = 3x - 1.', '6', '3', '2', '1', 'a'),
+	(73, 5, 13, 'Resolva 5x = -15. Qual é o valor de x?', '3', '-3', '-5', '5', 'b'),
+	(74, 5, 14, 'Qual é a solução de x + 2 = 2x - 4?', '4', '2', '6', '3', 'c'),
+	(75, 5, 15, 'Resolva -3x + 9 = 3. Qual é o valor de x?', '-2', '3', '-3', '2', 'd'),
+	(76, 6, 1, 'Qual é a coordenada x do vértice da função f(x) = x² - 4x + 3?', '1', '2', '-2', '4', 'b'),
+	(77, 6, 2, 'Determine as coordenadas do vértice da função f(x) = x² + 2x - 3.', '(1, -3)', '(-1, 3)', '(-1, -4)', '(2, 1)', 'c'),
+	(78, 6, 3, 'Qual é a coordenada y do vértice da função f(x) = 2x² - 8x + 5?', '5', '2', '-8', '-3', 'd'),
+	(79, 6, 4, 'Encontre a coordenada x do vértice da função f(x) = -x² + 6x - 2.', '3', '-3', '6', '2', 'a'),
+	(80, 6, 5, 'Qual é o vértice da função f(x) = x² - 6x + 9?', '(3, 9)', '(3, 0)', '(-3, 0)', '(6, 3)', 'b'),
+	(81, 6, 6, 'Determine a coordenada x do vértice da função f(x) = 3x² + 12x - 1.', '2', '-4', '-2', '3', 'c'),
+	(82, 6, 7, 'Qual é a coordenada y do vértice da função f(x) = -2x² + 4x + 1?', '1', '-2', '4', '3', 'd'),
+	(83, 6, 8, 'Encontre o vértice da função f(x) = x² + 4x + 4.', '(-2, 0)', '(2, 4)', '(-2, 4)', '(4, 2)', 'a'),
+	(84, 6, 9, 'Qual é a coordenada x do vértice da função f(x) = 2x² - 4x + 5?', '-1', '1', '2', '-2', 'b'),
+	(85, 6, 10, 'Determine as coordenadas do vértice da função f(x) = -x² - 2x + 3.', '(1, 3)', '(-1, 3)', '(-1, 4)', '(2, -1)', 'c'),
+	(86, 6, 11, 'Qual é a coordenada y do vértice da função f(x) = x² - 2x - 1?', '1', '-1', '0', '-2', 'd'),
+	(87, 6, 12, 'Encontre a coordenada x do vértice da função f(x) = -3x² + 6x - 2.', '1', '-1', '3', '-3', 'a'),
+	(88, 6, 13, 'Qual é o vértice da função f(x) = 2x² + 8x + 6?', '(2, 6)', '(-2, -2)', '(-2, 6)', '(4, 2)', 'b'),
+	(89, 6, 14, 'Determine a coordenada x do vértice da função f(x) = x² + x - 2.', '0.5', '1', '-0.5', '-1', 'c'),
+	(90, 6, 15, 'Qual é a coordenada y do vértice da função f(x) = -2x² - 8x - 3?', '-3', '2', '-8', '5', 'd'),
+	(91, 7, 1, 'Quais são as raízes da equação x² - 5x + 6 = 0?', 'x = -2, x = -3', 'x = 2, x = 3', 'x = 1, x = 6', 'x = -1, x = -6', 'b'),
+	(92, 7, 2, 'Resolva x² - 4 = 0. Quais são as raízes?', 'x = 4, x = -4', 'x = 2, x = 2', 'x = 2, x = -2', 'x = 1, x = -1', 'c'),
+	(93, 7, 3, 'Encontre as raízes de x² + 2x - 3 = 0.', 'x = -1, x = 3', 'x = 2, x = -2', 'x = 1, x = 2', 'x = 1, x = -3', 'a'),
+	(94, 7, 4, 'Quais são as raízes da equação 2x² - 8x + 6 = 0?', 'x = 1, x = 3', 'x = 2, x = 4', 'x = -1, x = -3', 'x = 1, x = 2', 'a'),
+	(95, 7, 5, 'Resolva x² - 9 = 0. Quais são as raízes?', 'x = 9, x = -9', 'x = 3, x = -3', 'x = 3, x = 3', 'x = -3, x = -3', 'b'),
+	(96, 7, 6, 'Encontre as raízes de x² - x - 6 = 0.', 'x = -3, x = 2', 'x = 1, x = -6', 'x = 3, x = -2', 'x = -1, x = 6', 'c'),
+	(97, 7, 7, 'Quais são as raízes da equação 3x² + 6x - 9 = 0?', 'x = -1, x = 3', 'x = 2, x = -2', 'x = 3, x = -3', 'x = 1, x = -3', 'd'),
+	(98, 7, 8, 'Resolva x² + 4x + 4 = 0. Quais são as raízes?', 'x = -2', 'x = 2', 'x = -4', 'x = 4', 'a'),
+	(99, 7, 9, 'Encontre as raízes de x² - 2x - 8 = 0.', 'x = -4, x = 2', 'x = 4, x = -2', 'x = 1, x = -8', 'x = -1, x = 8', 'b'),
+	(100, 7, 10, 'Quais são as raízes da equação 2x² + 4x - 6 = 0?', 'x = -1, x = 3', 'x = 2, x = -2', 'x = 1, x = -3', 'x = 1, x = 2', 'c'),
+	(101, 7, 11, 'Resolva x² - 16 = 0. Quais são as raízes?', 'x = 16, x = -16', 'x = 4, x = 4', 'x = -4, x = -4', 'x = 4, x = -4', 'd'),
+	(102, 7, 12, 'Encontre as raízes de x² + 3x - 4 = 0.', 'x = 1, x = -4', 'x = -1, x = 4', 'x = 2, x = -2', 'x = 3, x = -1', 'a'),
+	(103, 7, 13, 'Quais são as raízes da equação 4x² - 12x + 9 = 0?', 'x = 3', 'x = 3/2', 'x = 3/4', 'x = -3', 'b'),
+	(104, 7, 14, 'Resolva x² - 6x + 5 = 0. Quais são as raízes?', 'x = -5, x = -1', 'x = 6, x = -1', 'x = 5, x = 1', 'x = -6, x = 1', 'c'),
+	(105, 7, 15, 'Encontre as raízes de 2x² - x - 3 = 0.', 'x = -3/2, x = 1', 'x = 2, x = -1', 'x = -2, x = 1', 'x = 3/2, x = -1', 'd'),
+	(106, 8, 1, 'Some os polinômios ( 2x^2 + 3x + 1 ) e ( x^2 - 2x + 4 ).', '( 2x^2 + x + 5 )', '( 3x^2 + x + 5 )', '( 3x^2 - x + 5 )', '( x^2 + x + 5 )', 'b'),
+	(107, 8, 2, 'Subtraia ( x^2 - x + 2 ) de ( 3x^2 + 2x - 1 ).', '( 2x^2 - 3x + 3 )', '( 2x^2 + 3x - 3 )', '( 4x^2 + x - 1 )', '( 2x^2 + x + 1 )', 'b'),
+	(108, 8, 3, 'Qual é o resultado de ( (4x + 3) + (2x - 5) )?', '( 6x + 2 )', '( 2x - 2 )', '( 6x - 2 )', '( 6x + 8 )', 'c'),
+	(109, 8, 4, 'Some ( x^2 + 5 ) e ( 2x^2 - 3x ).', '( 3x^2 + 3x + 5 )', '( x^2 - 3x + 5 )', '( 3x^2 - 3x + 5 )', '( 3x^2 - 3x - 5 )', 'c'),
+	(110, 8, 5, 'Subtraia ( 2x - 1 ) de ( 5x + 4 ).', '( 3x - 5 )', '( 7x + 3 )', '( 3x + 3 )', '( 3x + 5 )', 'd'),
+	(111, 8, 6, 'Qual é o resultado de ( (x^2 + 2x - 3) + (x^2 - x + 2) )?', '( 2x^2 + x + 1 )', '( 2x^2 + x - 1 )', '( x^2 + x - 1 )', '( 2x^2 - x - 1 )', 'b'),
+	(112, 8, 7, 'Subtraia ( x^2 + x ) de ( 2x^2 + 3x - 2 ).', '( x^2 - 2x + 2 )', '( x^2 + 2x - 2 )', '( 3x^2 + 2x - 2 )', '( x^2 + 4x - 2 )', 'b'),
+	(113, 8, 8, 'Some ( 3x^2 - 2x + 1 ) e ( -x^2 + x - 1 ).', '( 2x^2 + x )', '( 4x^2 - x )', '( 2x^2 - 3x + 2 )', '( 2x^2 - x )', 'd'),
+	(114, 8, 9, 'Qual é o resultado de ( (5x - 2) - (2x + 3) )?', '( 3x + 5 )', '( 7x - 5 )', '( 3x - 1 )', '( 3x - 5 )', 'd'),
+	(115, 8, 10, 'Some ( 2x^2 + x - 4 ) e ( x^2 - x + 4 ).', '( 3x^2 + 1 )', '( 3x^2 - 1 )', '( 3x^2 + 2x )', '( 3x^2 - 2x )', 'b'),
+	(116, 8, 11, 'Subtraia ( 3x^2 - 4x + 2 ) de ( 5x^2 + x - 1 ).', '( 2x^2 - 5x + 3 )', '( 8x^2 - 3x + 1 )', '( 2x^2 + 3x - 1 )', '( 2x^2 + 5x - 3 )', 'd'),
+	(117, 8, 12, 'Qual é o resultado de ( (x + 5) + (2x - 3) )?', '( 3x - 2 )', '( x + 2 )', '( 3x + 8 )', '( 3x + 2 )', 'd'),
+	(118, 8, 13, 'Some ( x^2 - x + 1 ) e ( 2x^2 + 2x - 1 ).', '( 3x^2 - x )', '( 3x^2 + 3x )', '( x^2 + x )', '( 3x^2 + x )', 'd'),
+	(119, 8, 14, 'Subtraia ( x - 2 ) de ( 4x + 3 ).', '( 3x - 5 )', '( 5x - 1 )', '( 3x + 1 )', '( 3x + 5 )', 'd'),
+	(120, 8, 15, 'Qual é o resultado de ( (2x^2 - 3x + 4) + (x^2 + x - 2) )?', '( 3x^2 + 2x + 2 )', '( 3x^2 - 2x + 2 )', '( 3x^2 - 2x - 2 )', '( x^2 - 2x + 2 )', 'b'),
+	(121, 9, 1, 'Qual é o grau do polinômio ( 3x^2 - 2x + 5 )?', '3', '2', '1', '5', 'b'),
+	(122, 9, 2, 'No polinômio ( x^3 + 4x^2 - x + 2 ), qual é o coeficiente de ( x^2 )?', '1', '-1', '2', '4', 'd'),
+	(123, 9, 3, 'Qual é o termo constante do polinômio ( 2x^4 - 3x^2 + 7 )?', '0', '-3', '2', '7', 'd'),
+	(124, 9, 4, 'Qual é o grau do polinômio ( 5x^5 + x^3 - 2x )?', '3', '2', '1', '5', 'd'),
+	(125, 9, 5, 'No polinômio ( -x^2 + 3x - 4 ), qual é o coeficiente de ( x )?', '-1', '-4', '0', '3', 'd'),
+	(126, 9, 6, 'Qual é o grau do polinômio ( x - 2 )?', '2', '0', '3', '1', 'd'),
+	(127, 9, 7, 'No polinômio ( 4x^3 - 2x^2 + x - 1 ), qual é o coeficiente de ( x^3 )?', '-2', '1', '-1', '4', 'd'),
+	(128, 9, 8, 'Qual é o termo constante do polinômio ( x^2 + 5x )?', '5', '1', '-5', '0', 'd'),
+	(129, 9, 9, 'Qual é o grau do polinômio ( 7x^4 - x^2 + 3x - 8 )?', '2', '3', '1', '4', 'd'),
+	(130, 9, 10, 'No polinômio ( 2x^5 - 3x^4 + x ), qual é o coeficiente de ( x^4 )?', '2', '1', '0', '-3', 'd'),
+	(131, 9, 11, 'Qual é o termo constante do polinômio ( -2x^3 + x^2 - 6 )?', '0', '-2', '1', '-6', 'd'),
+	(132, 9, 12, 'Qual é o grau do polinômio ( 3x^2 + 2 )?', '1', '3', '0', '2', 'd'),
+	(133, 9, 13, 'No polinômio ( x^4 - 5x^3 + 2x - 1 ), qual é o coeficiente de ( x )?', '-5', '-1', '0', '2', 'd'),
+	(134, 9, 14, 'Qual é o termo constante do polinômio ( 4x^2 - 3x + 9 )?', '0', '-3', '4', '9', 'd'),
+	(135, 9, 15, 'Qual é o grau do polinômio ( x^6 - 2x^4 + x^2 - 5 )?', '4', '2', '1', '6', 'd'),
+	(136, 10, 1, 'Divida ( x^2 - 3x + 2 ) por ( x - 1 ) usando divisão sintética. Qual é o quociente?', '( x + 2 )', '( x - 1 )', '( x + 1 )', '( x - 2 )', 'd'),
+	(137, 10, 2, 'Qual é o resto da divisão de ( x^3 - 2x^2 + x - 1 ) por ( x - 2 )?', '0', '-1', '2', '1', 'd'),
+	(138, 10, 3, 'Divida ( 2x^2 + x - 3 ) por ( x + 1 ). Qual é o quociente?', '( 2x + 1 )', '( x - 1 )', '( x + 1 )', '( 2x - 1 )', 'd'),
+	(139, 10, 4, 'Qual é o resto da divisão de ( x^3 + 3x^2 - 4 ) por ( x + 2 )?', '0', '-4', '2', '4', 'd'),
+	(140, 10, 5, 'Divida ( x^3 - x^2 - 5x + 6 ) por ( x - 2 ). Qual é o quociente?', '( x^2 - x + 3 )', '( x^2 + x + 3 )', '( x^2 + x - 3 )', '( x^2 - x - 3 )', 'c'),
+	(141, 10, 6, 'Qual é o resto da divisão de ( 3x^2 - 2x + 1 ) por ( x - 1 )?', '1', '0', '3', '2', 'd'),
+	(142, 10, 7, 'Divida ( x^2 + 4x + 4 ) por ( x + 2 ). Qual é o quociente?', '( x - 2 )', '( x + 1 )', '( x - 1 )', '( x + 2 )', 'd'),
+	(143, 10, 8, 'Qual é o resto da divisão de ( x^4 - x^2 + 1 ) por ( x - 1 )?', '0', '-1', '2', '1', 'd'),
+	(144, 10, 9, 'Divida ( 2x^3 - 5x^2 + 3x - 1 ) por ( x - 3 ). Qual é o quociente?', '( 2x^2 - x )', '( 2x^2 + x + 1 )', '( 2x^2 - x - 1 )', '( 2x^2 + x )', 'd'),
+	(145, 10, 10, 'Qual é o resto da divisão de ( x^3 + 2x^2 - x + 4 ) por ( x + 1 )?', '4', '0', '-6', '6', 'd'),
+	(146, 10, 11, 'Divida ( x^2 - x - 6 ) por ( x - 3 ). Qual é o quociente?', '( x - 2 )', '( x + 1 )', '( x - 1 )', '( x + 2 )', 'd'),
+	(147, 10, 12, 'Qual é o resto da divisão de ( 4x^2 + 2x - 3 ) por ( x + 1 )?', '0', '3', '-3', '-5', 'd'),
+	(148, 10, 13, 'Divida ( x^3 - 4x^2 + 5x - 2 ) por ( x - 1 ). Qual é o quociente?', '( x^2 + 3x - 2 )', '( x^2 - 3x - 2 )', '( x^2 + 3x + 2 )', '( x^2 - 3x + 2 )', 'd'),
+	(149, 10, 14, 'Qual é o resto da divisão de ( x^2 + 3x + 2 ) por ( x - 2 )?', '0', '6', '-2', '12', 'd'),
+	(150, 10, 15, 'Divida ( 3x^3 - x^2 - 2x + 1 ) por ( x - 1 ). Qual é o quociente?', '( 3x^2 - 2x )', '( 3x^2 + 2x + 1 )', '( 3x^2 - 2x - 1 )', '( 3x^2 + 2x )', 'd'),
+	(151, 11, 1, 'Fatore o polinômio ( x^2 - 4 ).', '( (x - 2)^2 )', '( (x + 2)^2 )', '( (x - 4)(x + 4) )', '( (x - 2)(x + 2) )', 'd'),
+	(152, 11, 2, 'Qual é a fatoração de ( 2x^2 + 4x )?', '( 2x(x - 2) )', '( x(2x + 4) )', '( x(2x - 4) )', '( 2x(x + 2) )', 'd'),
+	(153, 11, 3, 'Fatore ( x^2 + 5x + 6 ).', '( (x - 2)(x - 3) )', '( (x + 1)(x + 6) )', '( (x - 1)(x - 6) )', '( (x + 2)(x + 3) )', 'd'),
+	(154, 11, 4, 'Qual é a fatoração de ( x^3 - 8 )?', '( (x + 2)(x^2 - 2x + 4) )', '( (x - 2)(x^2 - 2x + 4) )', '( (x + 2)(x^2 + 2x + 4) )', '( (x - 2)(x^2 + 2x + 4) )', 'd'),
+	(155, 11, 5, 'Fatore ( 3x^2 - 12 ).', '( 3(x - 4)(x + 4) )', '( (3x - 2)(x + 2) )', '( (3x - 4)(x + 4) )', '( 3(x - 2)(x + 2) )', 'd'),
+	(156, 11, 6, 'Qual é a fatoração de ( x^2 - x - 6 )?', '( (x + 3)(x - 2) )', '( (x - 1)(x + 6) )', '( (x + 1)(x - 6) )', '( (x - 3)(x + 2) )', 'd'),
+	(157, 11, 7, 'Fatore ( x^2 + 4x + 4 ).', '( (x - 2)^2 )', '( (x + 4)(x + 1) )', '( (x - 4)(x - 1) )', '( (x + 2)^2 )', 'd'),
+	(158, 11, 8, 'Qual é a fatoração de ( x^3 + 27 )?', '( (x - 3)(x^2 + 3x + 9) )', '( (x + 3)(x^2 + 3x + 9) )', '( (x - 3)(x^2 - 3x + 9) )', '( (x + 3)(x^2 - 3x + 9) )', 'd'),
+	(159, 11, 9, 'Fatore ( 4x^2 - 9 ).', '( (2x - 9)(2x + 9) )', '( (4x - 3)(x + 3) )', '( (4x - 9)(x + 1) )', '( (2x - 3)(2x + 3) )', 'd'),
+	(160, 11, 10, 'Qual é a fatoração de ( x^2 + 3x - 10 )?', '( (x - 5)(x + 2) )', '( (x + 1)(x - 10) )', '( (x - 1)(x + 10) )', '( (x + 5)(x - 2) )', 'd'),
+	(161, 11, 11, 'Fatore ( 5x^2 + 10x ).', '( 5x(x - 2) )', '( x(5x + 10) )', '( x(5x - 10) )', '( 5x(x + 2) )', 'd'),
+	(162, 11, 12, 'Qual é a fatoração de ( x^2 - 16 )?', '( (x - 4)^2 )', '( (x + 4)^2 )', '( (x - 2)(x + 8) )', '( (x - 4)(x + 4) )', 'd'),
+	(163, 11, 13, 'Fatore ( x^2 - 6x + 9 ).', '( (x + 3)^2 )', '( (x - 2)(x - 4) )', '( (x + 2)(x + 4) )', '( (x - 3)^2 )', 'd'),
+	(164, 11, 14, 'Qual é a fatoração de ( 2x^2 + 7x + 3 )?', '( (2x + 3)(x + 1) )', '( (x + 1)(x + 3) )', '( (2x + 1)(x + 2) )', '( (2x + 1)(x + 3) )', 'd'),
+	(165, 11, 15, 'Fatore ( x^3 - 1 ).', '( (x + 1)(x^2 - x + 1) )', '( (x - 1)(x^2 - x + 1) )', '( (x + 1)(x^2 + x + 1) )', '( (x - 1)(x^2 + x + 1) )', 'd'),
+	(166, 12, 1, 'Resolva a equação ( 2^x = 8 ). Qual é o valor de ( x )?', '2', '4', '3', '1', 'c'),
+	(167, 12, 2, 'Qual é a solução de ( 3^x = 27 )?', '2', '4', '3', '1', 'c'),
+	(168, 12, 3, 'Resolva ( 4^x = 16 ). Qual é o valor de ( x )?', '3', '2', '1', '4', 'b'),
+	(169, 12, 4, 'Encontre ( x ) na equação ( 5^{2x} = 25 ).', '2', '1', '3', '0', 'b'),
+	(170, 12, 5, 'Resolva ( 2^{x+1} = 4 ). Qual é o valor de ( x )?', '2', '1', '3', '0', 'b'),
+	(171, 12, 6, 'Qual é a solução de ( 3^{x-1} = 9 )?', '2', '1', '3', '4', 'c'),
+	(172, 12, 7, 'Resolva ( 2^{2x} = 16 ). Qual é o valor de ( x )?', '3', '2', '1', '4', 'b'),
+	(173, 12, 8, 'Encontre ( x ) na equação ( 4^{x+1} = 64 ).', '2', '1', '3', '0', 'b'),
+	(174, 12, 9, 'Resolva ( 5^x = 125 ). Qual é o valor de ( x )?', '2', '4', '1', '3', 'd'),
+	(175, 12, 10, 'Qual é a solução de ( 2^{x-2} = 8 )?', '3', '2', '4', '5', 'd'),
+	(176, 12, 11, 'Resolva ( 3^{2x+1} = 81 ). Qual é o valor de ( x )?', '2', '3', '0', '1', 'd'),
+	(177, 12, 12, 'Encontre ( x ) na equação ( 2^x = 32 ).', '4', '6', '3', '5', 'd'),
+	(178, 12, 13, 'Resolva ( 4^{x-1} = 4 ). Qual é o valor de ( x )?', '1', '3', '0', '2', 'd'),
+	(179, 12, 14, 'Qual é a solução de ( 5^{x+2} = 625 )?', '3', '1', '4', '2', 'd'),
+	(180, 12, 15, 'Resolva ( 3^x = 1 ). Qual é o valor de ( x )?', '1', '2', '-1', '0', 'd'),
+	(181, 13, 1, 'Resolva a equação ( log_2(x) = 3 ). Qual é o valor de ( x )?', '6', '2', '8', '9', 'c'),
+	(182, 13, 2, 'Qual é a solução de ( log_3(x) = 2 )?', '6', '3', '9', '12', 'c'),
+	(183, 13, 3, 'Resolva ( log_5(x) = 1 ). Qual é o valor de ( x )?', '1', '5', '25', '10', 'b'),
+	(184, 13, 4, 'Encontre ( x ) na equação ( log_4(x) = 2 ).', '8', '16', '4', '32', 'b'),
+	(185, 13, 5, 'Resolva ( log_2(8) = x ). Qual é o valor de ( x )?', '2', '3', '4', '1', 'b'),
+	(186, 13, 6, 'Qual é a solução de ( log_3(x) = 3 )?', '9', '27', '3', '81', 'b'),
+	(187, 13, 7, 'Resolva ( log_{10}(x) = 2 ). Qual é o valor de ( x )?', '10', '100', '1000', '1', 'b'),
+	(188, 13, 8, 'Encontre ( x ) na equação ( log_2(x) + 1 = 3 ).', '2', '4', '8', '16', 'b'),
+	(189, 13, 9, 'Resolva ( log_5(x) - 1 = 1 ). Qual é o valor de ( x )?', '5', '25', '125', '10', 'b'),
+	(190, 13, 10, 'Qual é a solução de ( log_4(64) = x )?', '2', '3', '4', '6', 'b'),
+	(191, 13, 11, 'Resolva ( log_3(2x) = 2 ). Qual é o valor de ( x )?', '9', '4.5', '3', '6', 'b'),
+	(192, 13, 12, 'Encontre ( x ) na equação ( log_2(x) = 4 ).', '8', '16', '32', '4', 'b'),
+	(193, 13, 13, 'Resolva ( log_5(25) = x ). Qual é o valor de ( x )?', '1', '2', '3', '5', 'b'),
+	(194, 13, 14, 'Qual é a solução de ( log_{10}(x) + 1 = 3 )?', '10', '100', '1000', '1', 'b'),
+	(195, 13, 15, 'Resolva ( log_3(x) - 2 = -1 ). Qual é o valor de ( x )?', '9', '3', '1', '27', 'b'),
+	(196, 14, 1, 'Resolva o sistema: x + y = 5, x - y = 1. Qual é a solução (x, y)?', '(2, 3)', '(3, 2)', '(4, 1)', '(1, 4)', 'b'),
+	(197, 14, 2, 'Qual é a solução do sistema: 2x + y = 7, x - y = 2?', '(3, 1)', '(2, 3)', '(1, 5)', '(4, -1)', 'a'),
+	(198, 14, 3, 'Resolva o sistema: x + 2y = 8, x - y = 2. Qual é a solução (x, y)?', '(4, 2)', '(2, 4)', '(3, 3)', '(5, 1)', 'a'),
+	(199, 14, 4, 'Encontre a solução do sistema: 3x - y = 5, x + y = 3.', '(2, 1)', '(1, 2)', '(3, 0)', '(0, 3)', 'a'),
+	(200, 14, 5, 'Resolva o sistema: 2x + 3y = 11, x - y = 1. Qual é a solução (x, y)?', '(2, 3)', '(4, 1)', '(3, 2)', '(1, 4)', 'c'),
+	(201, 14, 6, 'Qual é a solução do sistema: x + y = 4, 2x - y = 5?', '(3, 1)', '(2, 2)', '(1, 3)', '(4, 0)', 'a'),
+	(202, 14, 7, 'Resolva o sistema: 4x + y = 10, x - y = 1. Qual é a solução (x, y)?', '(2, 2)', '(3, 1)', '(1, 3)', '(2, 1)', 'b'),
+	(203, 14, 8, 'Encontre a solução do sistema: x + 3y = 7, 2x - y = 4.', '(2, 1)', '(1, 2)', '(3, 0)', '(0, 3)', 'a'),
+	(204, 14, 9, 'Resolva o sistema: 3x + 2y = 8, x - y = 1. Qual é a solução (x, y)?', '(2, 1)', '(1, 2)', '(3, -1)', '(0, 4)', 'a'),
+	(205, 14, 10, 'Qual é a solução do sistema: 2x + y = 5, x + 2y = 4?', '(2, 1)', '(1, 2)', '(3, -1)', '(-1, 3)', 'a'),
+	(206, 14, 11, 'Resolva o sistema: x - y = 3, 2x + y = 6. Qual é a solução (x, y)?', '(3, 0)', '(2, -1)', '(1, -2)', '(0, 3)', 'a'),
+	(207, 14, 12, 'Encontre a solução do sistema: 5x - 2y = 4, x + y = 2.', '(1, 1)', '(2, 0)', '(0, 2)', '(1, 0)', 'a'),
+	(208, 14, 13, 'Resolva o sistema: x + y = 6, 3x - y = 10. Qual é a solução (x, y)?', '(4, 2)', '(2, 4)', '(3, 3)', '(5, 1)', 'a'),
+	(209, 14, 14, 'Qual é a solução do sistema: 2x - y = 3, x + 2y = 6?', '(2, 1)', '(1, 2)', '(3, 0)', '(0, 3)', 'a'),
+	(210, 14, 15, 'Resolva o sistema: 3x + y = 7, x - y = 1. Qual é a solução (x, y)?', '(2, 1)', '(1, 2)', '(3, -1)', '(0, 4)', 'a'),
+	(211, 15, 1, 'Resolva a inequação x + 3 < 7. Qual é a solução?', 'x > 4', 'x < 4', 'x < 3', 'x > 3', 'b'),
+	(212, 15, 2, 'Qual é a solução de 2x - 1 ≥ 5?', 'x ≥ 3', 'x ≥ 2', 'x ≤ 3', 'x ≤ 2', 'a'),
+	(213, 15, 3, 'Resolva 3x + 2 > 8. Qual é a solução?', 'x > 2', 'x < 2', 'x > 3', 'x < 3', 'a'),
+	(214, 15, 4, 'Encontre a solução de -x + 4 ≤ 1.', 'x ≥ 3', 'x ≤ 3', 'x ≥ 4', 'x ≤ 4', 'a'),
+	(215, 15, 5, 'Resolva 5x - 10 < 0. Qual é a solução?', 'x < 2', 'x > 2', 'x < 5', 'x > 5', 'a'),
+	(216, 15, 6, 'Qual é a solução de 2x + 1 ≤ 7?', 'x ≤ 3', 'x ≥ 3', 'x ≤ 4', 'x ≥ 4', 'a'),
+	(217, 15, 7, 'Resolva 4x - 3 > 9. Qual é a solução?', 'x > 3', 'x < 3', 'x > 4', 'x < 4', 'a'),
+	(218, 15, 8, 'Encontre a solução de x - 5 ≥ -2.', 'x ≥ 3', 'x ≤ 3', 'x ≥ 2', 'x ≤ 2', 'a'),
+	(219, 15, 9, 'Resolva -2x + 4 ≤ 0. Qual é a solução?', 'x ≥ 2', 'x ≤ 2', 'x ≥ 4', 'x ≤ 4', 'a'),
+	(220, 15, 10, 'Qual é a solução de 3x + 1 < 10?', 'x < 3', 'x > 3', 'x < 4', 'x > 4', 'a'),
+	(221, 15, 11, 'Resolva 2x - 7 ≤ 1. Qual é a solução?', 'x ≤ 4', 'x ≥ 4', 'x ≤ 3', 'x ≥ 3', 'a'),
+	(222, 15, 12, 'Encontre a solução de -3x + 6 > 0.', 'x < 2', 'x > 2', 'x < 3', 'x > 3', 'a'),
+	(223, 15, 13, 'Resolva x + 4 ≥ 6. Qual é a solução?', 'x ≥ 2', 'x ≤ 2', 'x ≥ 4', 'x ≤ 4', 'a'),
+	(224, 15, 14, 'Qual é a solução de 5x + 2 < 12?', 'x < 2', 'x > 2', 'x < 3', 'x > 3', 'a'),
+	(225, 15, 15, 'Resolva -4x + 8 ≥ 4. Qual é a solução?', 'x ≤ 1', 'x ≥ 1', 'x ≤ 2', 'x ≥ 2', 'a');
 
--- Fase 2
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(2, 1, 'Quanto é 6 × 7?', '36', '42', '48', '40', 'b'),
-(2, 2, 'Qual é o resultado de 9 × 4?', '32', '36', '40', '34', 'b'),
-(2, 3, 'Quanto é 12 × 3?', '36', '33', '39', '30', 'a'),
-(2, 4, 'Se você multiplica 5 por 8, qual é o resultado?', '35', '40', '45', '50', 'b'),
-(2, 5, 'Qual é o valor de 7 × 6?', '42', '48', '36', '40', 'a');
+-- Copiando estrutura para tabela math_duolingo.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `avatar` varchar(255) DEFAULT 'cute_rocket.png',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Fase 3
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(3, 1, 'Quanto é 24 ÷ 4?', '6', '5', '8', '7', 'a'),
-(3, 2, 'Qual é o resultado de 36 ÷ 9?', '3', '4', '5', '6', 'b'),
-(3, 3, 'Quanto é 45 ÷ 5?', '8', '9', '10', '7', 'b'),
-(3, 4, 'Se você divide 28 por 7, qual é o resultado?', '3', '4', '5', '6', 'b'),
-(3, 5, 'Qual é o valor de 60 ÷ 12?', '5', '6', '4', '7', 'a');
+-- Copiando dados para a tabela math_duolingo.users: ~4 rows (aproximadamente)
+DELETE FROM `users`;
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `avatar`, `created_at`, `updated_at`) VALUES
+	(1, 'Astro João', 'astro@exemplo.com', 'e10adc3949ba59abbe56e057f20f883e', 'cute_rocket.png', '2025-03-20 23:50:47', '2025-03-20 23:50:47'),
+	(2, 'teste', 'teste@gmail.com', '$2y$10$/w.U/SHFJzbbEr96RkzASOOMAMwpaBRBTYKNwBDW/YAahdKr82Eya', 'cute_rocket.png', '2025-03-22 01:04:34', '2025-03-22 01:04:34'),
+	(3, 'duda', 'duda@gmail.com', '$2y$10$XWIuZ0LECdSHpui2b0qEDeHABETTNu3VxcWTqqNS74RidWAfk7/Bq', 'cute_rocket.png', '2025-03-25 01:24:28', '2025-03-25 01:24:28'),
+	(4, 'duda2', 'duda2@gmail.com', '$2b$10$vBP89mUDzrgJc3ta0kXCF.aKH/5aRSSzMIcn5oyuAGMIIyUUGIiyK', 'cute_rocket.png', '2025-03-25 23:25:49', '2025-03-25 23:25:49'),
+	(5, 'adm', 'adm@teste.com.br', '$2b$10$49eheigWkN1mrhoE9WPWTOCqfuXOrX9x60sz6mKvwhO5KQ9hVq8Re', 'cute_rocket.png', '2025-03-26 22:37:34', '2025-03-26 22:37:34');
 
--- Fase 4
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(4, 1, 'Resolva: 3 + 4 × 2 = ?', '14', '11', '10', '8', 'b'),
-(4, 2, 'Qual é o valor de x em 5x - 8 = 12?', '4', '3', '5', '2', 'a'),
-(4, 3, 'Resolva: 20 ÷ 4 + 3 = ?', '8', '7', '9', '6', 'a'),
-(4, 4, 'Se 2x + 6 = 14, qual é o valor de x?', '3', '4', '5', '6', 'b'),
-(4, 5, 'Qual é o resultado de 15 - 3 × 2?', '9', '12', '6', '10', 'c');
+-- Copiando estrutura para tabela math_duolingo.user_progress
+DROP TABLE IF EXISTS `user_progress`;
+CREATE TABLE IF NOT EXISTS `user_progress` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `phase_id` int NOT NULL,
+  `stars_earned` int DEFAULT '0',
+  `completed` tinyint(1) DEFAULT '0',
+  `last_attempt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`phase_id`),
+  KEY `phase_id` (`phase_id`),
+  CONSTRAINT `user_progress_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_progress_ibfk_2` FOREIGN KEY (`phase_id`) REFERENCES `phases` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Fase 5
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(5, 1, 'Qual é o perímetro de um quadrado com lado 5 cm?', '15 cm', '20 cm', '25 cm', '10 cm', 'b'),
-(5, 2, 'Um triângulo tem lados 3 cm, 4 cm e 5 cm. Qual é o perímetro?', '12 cm', '10 cm', '14 cm', '11 cm', 'a'),
-(5, 3, 'Qual é o perímetro de um retângulo com comprimento 6 cm e largura 4 cm?', '18 cm', '20 cm', '16 cm', '22 cm', 'b'),
-(5, 4, 'Um pentágono regular tem lado 7 cm. Qual é o perímetro?', '28 cm', '35 cm', '30 cm', '40 cm', 'b'),
-(5, 5, 'Se um triângulo tem lados 8 cm, 6 cm e 10 cm, qual é o perímetro?', '24 cm', '22 cm', '26 cm', '20 cm', 'a');
+-- Copiando dados para a tabela math_duolingo.user_progress: ~0 rows (aproximadamente)
+DELETE FROM `user_progress`;
 
--- Fase 6
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(6, 1, 'Qual é a área de um quadrado com lado 4 cm?', '16 cm²', '12 cm²', '20 cm²', '14 cm²', 'a'),
-(6, 2, 'Um retângulo tem comprimento 5 cm e largura 3 cm. Qual é a área?', '15 cm²', '18 cm²', '12 cm²', '20 cm²', 'a'),
-(6, 3, 'Qual é a área de um triângulo com base 6 cm e altura 4 cm?', '10 cm²', '12 cm²', '14 cm²', '8 cm²', 'b'),
-(6, 4, 'Um paralelogramo tem base 7 cm e altura 5 cm. Qual é a área?', '30 cm²', '35 cm²', '28 cm²', '40 cm²', 'b'),
-(6, 5, 'Qual é a área de um quadrado com lado 6 cm?', '30 cm²', '36 cm²', '32 cm²', '24 cm²', 'b');
-
--- Fase 7
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(7, 1, 'Qual é a soma dos ângulos internos de um triângulo?', '180°', '360°', '90°', '270°', 'a'),
-(7, 2, 'Um ângulo de 45° e outro de 60° estão em um triângulo. Qual é o terceiro ângulo?', '75°', '60°', '90°', '45°', 'a'),
-(7, 3, 'Qual é a soma dos ângulos internos de um quadrado?', '360°', '180°', '270°', '450°', 'a'),
-(7, 4, 'Se dois ângulos de um triângulo são 50° e 70°, qual é o terceiro?', '60°', '50°', '70°', '80°', 'a'),
-(7, 5, 'Qual é o complemento de um ângulo de 35°?', '55°', '65°', '45°', '75°', 'a');
-
--- Fase 8
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(8, 1, 'Qual é a circunferência de um círculo com raio 7 cm? (Use π ≈ 3,14)', '43,96 cm', '44 cm', '42 cm', '45 cm', 'a'),
-(8, 2, 'Qual é a área de um círculo com raio 5 cm? (Use π ≈ 3,14)', '78,5 cm²', '75 cm²', '80 cm²', '70 cm²', 'a'),
-(8, 3, 'Um círculo tem diâmetro 10 cm. Qual é a circunferência? (Use π ≈ 3,14)', '31,4 cm', '30 cm', '32 cm', '28 cm', 'a'),
-(8, 4, 'Qual é a área de um círculo com diâmetro 8 cm? (Use π ≈ 3,14)', '50,24 cm²', '48 cm²', '52 cm²', '46 cm²', 'a'),
-(8, 5, 'Se a circunferência de um círculo é 25,12 cm, qual é o raio? (Use π ≈ 3,14)', '4 cm', '5 cm', '3 cm', '6 cm', 'a');
-
--- Fase 9
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(9, 1, 'Qual é o volume de um cubo com aresta 3 cm?', '27 cm³', '24 cm³', '30 cm³', '18 cm³', 'a'),
-(9, 2, 'Um paralelepípedo tem 4 cm de comprimento, 3 cm de largura e 5 cm de altura. Qual é o volume?', '60 cm³', '50 cm³', '55 cm³', '65 cm³', 'a'),
-(9, 3, 'Qual é o volume de um cubo com aresta 6 cm?', '216 cm³', '200 cm³', '180 cm³', '240 cm³', 'a'),
-(9, 4, 'Um paralelepípedo tem base 5 cm × 4 cm e altura 3 cm. Qual é o volume?', '60 cm³', '50 cm³', '70 cm³', '55 cm³', 'a'),
-(9, 5, 'Se um cubo tem volume 64 cm³, qual é a aresta?', '4 cm', '5 cm', '3 cm', '6 cm', 'a');
-
--- Fase 10
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(10, 1, 'Em um triângulo retângulo, os catetos são 3 cm e 4 cm. Qual é a hipotenusa?', '5 cm', '6 cm', '7 cm', '4 cm', 'a'),
-(10, 2, 'Qual é o cateto de um triângulo retângulo com hipotenusa 13 cm e outro cateto 5 cm?', '12 cm', '10 cm', '8 cm', '11 cm', 'a'),
-(10, 3, 'Um triângulo retângulo tem catetos 6 cm e 8 cm. Qual é a hipotenusa?', '10 cm', '12 cm', '14 cm', '9 cm', 'a'),
-(10, 4, 'Se a hipotenusa é 17 cm e um cateto é 8 cm, qual é o outro cateto?', '15 cm', '12 cm', '10 cm', '14 cm', 'a'),
-(10, 5, 'Qual é a hipotenusa de um triângulo retângulo com catetos 9 cm e 12 cm?', '15 cm', '13 cm', '14 cm', '16 cm', 'a');
-
--- Fase 11
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(11, 1, 'Dois triângulos são semelhantes. Um tem lados 3, 4, 5 e o outro 6, 8, x. Qual é x?', '10', '9', '12', '8', 'a'),
-(11, 2, 'A razão de semelhança entre dois triângulos é 2:1. Se um lado do menor é 5 cm, qual é o correspondente no maior?', '10 cm', '8 cm', '12 cm', '7 cm', 'a'),
-(11, 3, 'Em triângulos semelhantes, um lado é 4 cm e o correspondente é 12 cm. Qual é a razão de semelhança?', '1:3', '3:1', '2:1', '1:2', 'a'),
-(11, 4, 'Se um triângulo tem lados 6, 8, 10 e outro semelhante tem lado 9, qual é o perímetro do segundo?', '27', '24', '30', '21', 'a'),
-(11, 5, 'A altura de um triângulo é 3 cm e a do semelhante é 9 cm. Qual é a razão de semelhança?', '1:3', '3:1', '2:1', '1:2', 'a');
-
--- Fase 12
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(12, 1, 'Quanto é 1/2 + 1/4?', '3/4', '2/3', '1/3', '5/6', 'a'),
-(12, 2, 'Qual é o resultado de 3/5 - 1/5?', '2/5', '1/5', '3/10', '4/5', 'a'),
-(12, 3, 'Some 2/3 + 1/6.', '5/6', '3/6', '4/6', '7/6', 'a'),
-(12, 4, 'Subtraia 7/8 - 3/8.', '1/2', '4/8', '1/4', '5/8', 'a'),
-(12, 5, 'Qual é o valor de 5/6 - 1/3?', '1/2', '2/3', '1/3', '4/6', 'a');
-
--- Fase 13
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(13, 1, 'Quanto é 2/3 × 3/4?', '1/2', '3/7', '5/6', '2/4', 'a'),
-(13, 2, 'Qual é o resultado de 1/5 ÷ 2/3?', '3/10', '2/5', '1/3', '5/6', 'a'),
-(13, 3, 'Multiplique 4/5 por 3/2.', '6/5', '7/10', '5/6', '12/10', 'a'),
-(13, 4, 'Divida 3/4 por 1/2.', '3/2', '1/2', '2/3', '4/3', 'a'),
-(13, 5, 'Qual é o valor de 5/6 × 2/5?', '1/3', '2/3', '5/15', '10/30', 'a');
-
--- Fase 14
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(14, 1, 'Quanto é 2³?', '6', '8', '10', '4', 'b'),
-(14, 2, 'Qual é o valor de 5²?', '20', '25', '15', '30', 'b'),
-(14, 3, 'Resolva 3⁴.', '81', '64', '27', '54', 'a'),
-(14, 4, 'Se 4² = x, qual é x?', '12', '16', '20', '8', 'b'),
-(14, 5, 'Qual é o resultado de 10¹?', '10', '1', '100', '0', 'a');
-
--- Fase 15
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(15, 1, 'Resolva: 2x + 3 = 11. Qual é x?', '4', '3', '5', '2', 'a'),
-(15, 2, 'Qual é o valor de x em 5x - 7 = 13?', '4', '3', '5', '2', 'a'),
-(15, 3, 'Se 3x + 8 = 20, qual é x?', '4', '6', '5', '3', 'a'),
-(15, 4, 'Resolva: 4x - 10 = 6. Qual é x?', '4', '2', '3', '5', 'a'),
-(15, 5, 'Qual é x em 7x + 5 = 26?', '3', '4', '2', '5', 'a');
-
--- Fase 16
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(16, 1, 'Resolva: x + y = 5 e x - y = 1. Qual é x?', '3', '2', '4', '5', 'a'),
-(16, 2, 'Em 2x + y = 7 e x - y = 2, qual é y?', '1', '-1', '2', '0', 'a'),
-(16, 3, 'Se 3x + 2y = 12 e x + y = 5, qual é x?', '2', '3', '4', '1', 'a'),
-(16, 4, 'Resolva: 4x - y = 10 e 2x + y = 8. Qual é y?', '2', '1', '3', '-2', 'a'),
-(16, 5, 'Qual é x em x + 3y = 7 e 2x - y = 4?', '3', '2', '5', '1', 'a');
-
--- Fase 17
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(17, 1, 'Quanto é 2⁻²?', '1/4', '1/2', '4', '-4', 'a'),
-(17, 2, 'Qual é o valor de (1/3)²?', '1/9', '1/6', '1/3', '9', 'a'),
-(17, 3, 'Resolva 5⁰ × 3².', '9', '15', '0', '45', 'a'),
-(17, 4, 'Se 4⁻¹ = x, qual é x?', '1/4', '1/2', '4', '-4', 'a'),
-(17, 5, 'Qual é o resultado de (2/5)²?', '4/25', '2/25', '4/5', '1/5', 'a');
-
--- Fase 18
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(18, 1, 'Resolva: 2x + 3 < 9. Qual é o maior valor inteiro de x?', '2', '3', '4', '1', 'a'),
-(18, 2, 'Qual é o menor inteiro que satisfaz 5x - 2 > 8?', '3', '2', '4', '1', 'a'),
-(18, 3, 'Se 3x + 4 ≤ 13, qual é o maior valor inteiro de x?', '3', '4', '2', '5', 'a'),
-(18, 4, 'Resolva: 4x - 5 ≥ 7. Qual é o menor inteiro de x?', '3', '2', '4', '1', 'a'),
-(18, 5, 'Qual é o maior inteiro em 7x + 1 < 22?', '2', '3', '4', '1', 'a');
-
--- Fase 19
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(19, 1, 'Qual é uma raiz de x² - 9 = 0?', '3', '-3', '6', '0', 'a'),
-(19, 2, 'Resolva x² + 2x - 3 = 0. Qual é uma solução?', '1', '-3', '2', '0', 'a'),
-(19, 3, 'Qual é o vértice de y = x² - 4x + 3?', '(2, -1)', '(1, 0)', '(3, 2)', '(0, 3)', 'a'),
-(19, 4, 'Se x² - 5x + 6 = 0, qual é uma raiz?', '2', '3', '1', '4', 'a'),
-(19, 5, 'Qual é uma solução de x² + 4x + 4 = 0?', '-2', '2', '-4', '0', 'a');
-
--- Fase 20
-INSERT INTO questions (phase_id, question_number, question_text, option_a, option_b, option_c, option_d, correct_option) VALUES
-(20, 1, 'Quanto é 3 × 4 + 6 ÷ 2?', '15', '14', '12', '18', 'a'),
-(20, 2, 'Qual é a área de um triângulo com base 8 cm e altura 5 cm?', '20 cm²', '25 cm²', '40 cm²', '15 cm²', 'a'),
-(20, 3, 'Resolva: 2x + 3 = 11. Qual é x?', '4', '3', '5', '2', 'a'),
-(20, 4, 'Qual é o volume de um cubo com aresta 4 cm?', '64 cm³', '48 cm³', '56 cm³', '72 cm³', 'a'),
-(20, 5, 'Se x² - 4 = 0, qual é uma raiz?', '2', '-2', '4', '0', 'a');
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
