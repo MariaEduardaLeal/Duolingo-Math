@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
           `;
           phaseWinSound.play(); // Toca som de vitória da fase
+          submitButton.classList.add('hidden');
           setTimeout(() => window.location.href = '/phases.html', 7000);
       })
       .catch(err => console.error('Erro ao salvar progresso:', err));
