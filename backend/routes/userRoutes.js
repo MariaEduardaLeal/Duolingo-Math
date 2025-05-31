@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { authenticateToken } = require('./authRoutes');
 const User = require('../models/User');
+const UserProgress = require('../models/UserProgress');
+const sequelize = require('../config/database');
 const router = express.Router();
 
 // Rota para obter os dados do usuário
@@ -82,6 +84,48 @@ router.put('/user/:userId', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: `${field} já está em uso` });
     }
     res.status(500).json({ error: 'Erro ao atualizar perfil', details: error.message });
+  }
+});
+
+// Rota para obter o ranking dos usuários
+router.get('/ranking', authenticateToken, async (req, res) => {
+  try {
+    const rankingData = await UserProgress.findAll({
+      attributes: [
+        'user_id', 
+        
+        [sequelize.fn('SUM', sequelize.col('stars_earned')), 'totalStars']
+      ],
+      include: [{
+        model: User, 
+        attributes: ['name', 'avatar'] 
+      }],
+      group: [
+        'user_id', 
+        'User.id',   
+        'User.name',
+        'User.avatar'
+      ],
+      order: [
+        
+        [sequelize.literal('totalStars'), 'DESC']
+      ],
+      
+    });
+
+
+    const rankedUsers = rankingData.map(progress => ({
+      id: progress.user_id,
+      name: progress.User.name, 
+      avatar: progress.User.avatar, 
+      totalStars: parseInt(progress.get('totalStars'), 10) || 0 
+    }));
+
+    res.json(rankedUsers);
+
+  } catch (error) {
+    console.error('Erro ao buscar ranking:', error);
+    res.status(500).json({ error: 'Erro ao buscar o ranking dos usuários' });
   }
 });
 
