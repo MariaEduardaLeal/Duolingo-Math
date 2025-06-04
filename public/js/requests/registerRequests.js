@@ -8,7 +8,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const successMessage = document.getElementById('success-message');
 
     try {
-        const response = await axios.post('http://localhost:3000/api/register', {
+        const response = await axios.post('https://mathlingo.onrender.com/api/register', {
             name,
             email,
             password
