@@ -20,31 +20,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Buscar questões da fase
   const fetchQuestions = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Erro ao buscar questões');
-      const questions = await response.json();
-      return questions;
-    } catch (error) {
-      console.error('Erro:', error);
-      questionsContainer.innerHTML = '<p class="text-red-600">Erro ao carregar questões.</p>';
-      return [];
-    }
+      try {
+          const response = await fetch(`http://localhost:3000/api/questions/${phaseId}`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!response.ok) throw new Error('Erro ao buscar questões');
+          const questions = await response.json();
+          return questions;
+      } catch (error) {
+          console.error('Erro:', error);
+          questionsContainer.innerHTML = '<p class="text-red-600">Erro ao carregar questões.</p>';
+          return [];
+      }
   };
 
   // Buscar título da fase
   const fetchPhaseTitle = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const phase = await response.json();
-      return phase.title;
-    } catch (error) {
-      return `Fase ${phaseId}`;
-    }
+      try {
+          const response = await fetch(`http://localhost:3000/api/phases/${phaseId}`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+
+          });
+          const phase = await response.json();
+          return phase.title;
+      } catch (error) {
+          return `Fase ${phaseId}`;
+      }
   };
 
   const questions = await fetchQuestions();
@@ -181,33 +182,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const completePhase = () => {
-    clearInterval(interval);
-    const starsEarned = Math.max(3 - errors, 1);
-    fetch('http://localhost:3000/api/progress', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId: parseInt(userId),
-        phaseId: parseInt(phaseId),
-        starsEarned,
-        completed: true
+      clearInterval(interval);
+      const starsEarned = Math.max(3 - errors, 1); // Mínimo de 1 estrela
+      fetch('http://localhost:3000/api/progress', {
+    
+          method: 'POST',
+
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              userId: parseInt(userId),
+              phaseId: parseInt(phaseId),
+              starsEarned,
+              completed: true
+          })
       })
-    })
-    .then(() => {
-      questionsContainer.innerHTML = `
-        <div class="text-center">
-          <img src="/assets/laika_astronaut.png" class="w-48 mx-auto mb-4" alt="Laika">
-          <p class="text-lg">Oi, eu sou a Laika! Parabéns, você terminou a fase com ${starsEarned} estrela(s)! Vamos continuar aprendendo juntos?</p>
-        </div>
-      `;
-      phaseWinSound.play();
-      submitButton.classList.add('hidden');
-      setTimeout(() => window.location.href = '/phases.html', 7000);
-    })
-    .catch(err => console.error('Erro ao salvar progresso:', err));
+      .then(() => {
+          questionsContainer.innerHTML = `
+              <div class="text-center">
+                  <img src="/assets/laika_astronaut.png" class="w-48 mx-auto mb-4" alt="Laika">
+                  <p class="text-lg">Oi, eu sou a Laika! Parabéns, você terminou a fase com ${starsEarned} estrela(s)! Vamos continuar aprendendo juntos?</p>
+              </div>
+          `;
+          phaseWinSound.play(); // Toca som de vitória da fase
+          submitButton.classList.add('hidden');
+          setTimeout(() => window.location.href = '/phases.html', 7000);
+      })
+      .catch(err => console.error('Erro ao salvar progresso:', err));
   };
 
   const losePhase = (reason) => {
